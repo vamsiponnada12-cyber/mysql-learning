@@ -1,0 +1,273 @@
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| net_banking_fraud  |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.03 sec)
+
+mysql> CREATE DATABASE PFS6;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| net_banking_fraud  |
+| performance_schema |
+| pfs6               |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> CREATE SCHEMA DA6;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| da6                |
+| information_schema |
+| mysql              |
+| net_banking_fraud  |
+| performance_schema |
+| pfs6               |
+| sys                |
++--------------------+
+7 rows in set (0.00 sec)
+
+mysql> DROP DATABASES PFS6;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DATABASES PFS6' at line 1
+mysql> DROP DATABASE PFS6;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| da6                |
+| information_schema |
+| mysql              |
+| net_banking_fraud  |
+| performance_schema |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> DROP DATABASE DA6;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| net_banking_fraud  |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE EMPLOYES(
+    -> EMPID CHAR(5),
+    -> FNAME VARCHAR(100),
+    -> LNAME VARCHAR(70),
+    -> AGE INT,
+    -> DOJ DATE,
+    -> ADDRESS TINYTEXT,
+    -> DEPT VARCHAR(20),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 9
+mysql> USE PFS6;
+Database changed
+mysql> CREATE TABLE EMPLOYES(
+    -> EMPID CHAR(5),
+    -> FNAME VARCHAR(100),
+    -> LNAME VARCHAR(70),
+    -> AGE INT,
+    -> DOJ DATE,
+    -> ADDRESS TINYTEXT,
+    -> DEPT VARCHAR(20),
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 9
+mysql> CREATE TABLE EMPLOYES(
+    -> EMPID CHAR(5),
+    -> FNAME VARCHAR(100),
+    -> LNAME VARCHAR(70),
+    -> AGE INT,
+    -> DOJ DATE,
+    -> ADDRESS TINYTEXT,
+    -> DEPT VARCHAR(20)
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> DESC EMPLOYES;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| EMPID   | char(5)      | YES  |     | NULL    |       |
+| FNAME   | varchar(100) | YES  |     | NULL    |       |
+| LNAME   | varchar(70)  | YES  |     | NULL    |       |
+| AGE     | int          | YES  |     | NULL    |       |
+| DOJ     | date         | YES  |     | NULL    |       |
+| ADDRESS | tinytext     | YES  |     | NULL    |       |
+| DEPT    | varchar(20)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+7 rows in set (0.03 sec)
+
+mysql> -- MODIFY THE FNAME COLUMN IN EPLOYES TABLE TO VARCHAR(70)
+mysql> -- SYNTAX : ALTER TABLE TABLE-NAME MODIFY COLUMN-NAME DATATYPE SIZE
+mysql> ALTER TABLE EMPLOYES MODIFY FNAME VARCHAR(70);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYES;
++---------+-------------+------+-----+---------+-------+
+| Field   | Type        | Null | Key | Default | Extra |
++---------+-------------+------+-----+---------+-------+
+| EMPID   | char(5)     | YES  |     | NULL    |       |
+| FNAME   | varchar(70) | YES  |     | NULL    |       |
+| LNAME   | varchar(70) | YES  |     | NULL    |       |
+| AGE     | int         | YES  |     | NULL    |       |
+| DOJ     | date        | YES  |     | NULL    |       |
+| ADDRESS | tinytext    | YES  |     | NULL    |       |
+| DEPT    | varchar(20) | YES  |     | NULL    |       |
++---------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> -- modify the lname column in employes table to varchar(70)
+mysql> -- SYNTAX : ALTER TABLE TABLE-NAME MODIFY COLUMN-NAME DATATYPE SIZE
+mysql> ALTER TABLE EMPLOYES MODIFY LNAME VARCHAR(100);
+Query OK, 0 rows affected (0.04 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYES;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| EMPID   | char(5)      | YES  |     | NULL    |       |
+| FNAME   | varchar(70)  | YES  |     | NULL    |       |
+| LNAME   | varchar(100) | YES  |     | NULL    |       |
+| AGE     | int          | YES  |     | NULL    |       |
+| DOJ     | date         | YES  |     | NULL    |       |
+| ADDRESS | tinytext     | YES  |     | NULL    |       |
+| DEPT    | varchar(20)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> -- ADD A NEW COLUMN NAMED WITH LOCATION TO EMPLOYES TABLE
+mysql> -- syntax: after table table-name add column-name datatype(size);
+mysql> ALTER TABLE EMPLOYES ADD LOCATION TINYTEXT;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYES;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPID    | char(5)      | YES  |     | NULL    |       |
+| FNAME    | varchar(70)  | YES  |     | NULL    |       |
+| LNAME    | varchar(100) | YES  |     | NULL    |       |
+| AGE      | int          | YES  |     | NULL    |       |
+| DOJ      | date         | YES  |     | NULL    |       |
+| ADDRESS  | tinytext     | YES  |     | NULL    |       |
+| DEPT     | varchar(20)  | YES  |     | NULL    |       |
+| LOCATION | tinytext     | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> -- ADD A NEW COLUMN NAMED WITH PFID AFTER ADDRESS TO EMPLOYES TABLE
+mysql> -- syntax: after table table-name add column-name datatype(size);
+mysql> ALTER TABLE EMPLOYES ADD PFID TINYTEXT;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPPLOYES;
+ERROR 1146 (42S02): Table 'pfs6.empployes' doesn't exist
+mysql> DESC EMPLOYES;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPID    | char(5)      | YES  |     | NULL    |       |
+| FNAME    | varchar(70)  | YES  |     | NULL    |       |
+| LNAME    | varchar(100) | YES  |     | NULL    |       |
+| AGE      | int          | YES  |     | NULL    |       |
+| DOJ      | date         | YES  |     | NULL    |       |
+| ADDRESS  | tinytext     | YES  |     | NULL    |       |
+| DEPT     | varchar(20)  | YES  |     | NULL    |       |
+| LOCATION | tinytext     | YES  |     | NULL    |       |
+| PFID     | tinytext     | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYES ADD PFID INT AFTER ADDRESS;
+ERROR 1060 (42S21): Duplicate column name 'PFID'
+mysql> ^C
+mysql> ALTER TABLE EMPLOYES ADD PFID INT AFTER ADDRESS;
+ERROR 1060 (42S21): Duplicate column name 'PFID'
+mysql> ALTER TABLE EMPLOYES ADD FFID INT AFTER ADDRESS;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPPLOYES;
+ERROR 1146 (42S02): Table 'pfs6.empployes' doesn't exist
+mysql> DESC EMPLOYES;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| EMPID    | char(5)      | YES  |     | NULL    |       |
+| FNAME    | varchar(70)  | YES  |     | NULL    |       |
+| LNAME    | varchar(100) | YES  |     | NULL    |       |
+| AGE      | int          | YES  |     | NULL    |       |
+| DOJ      | date         | YES  |     | NULL    |       |
+| ADDRESS  | tinytext     | YES  |     | NULL    |       |
+| FFID     | int          | YES  |     | NULL    |       |
+| DEPT     | varchar(20)  | YES  |     | NULL    |       |
+| LOCATION | tinytext     | YES  |     | NULL    |       |
+| PFID     | tinytext     | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+
+
+
+
+
+mysql> CREATE TABLE COMPANY_STAFF(
+    -> EMPID INT,
+    -> AGE TINYINT,
+    -> EXPERIENCE SMALLINT,
+    -> GENDER CHAR(1),
+    -> EMP_NAME VARCHAR(50),
+    -> ADDRESS TINYTEXT,
+    -> SALARY DECIMAL(10,2),
+    -> DEPARTEMENT ENUM('HR','IT','SALES','FINANCE','SUPPORT'),
+    -> SKILLS SET('JAVA','PYTHON','SQL','EXCEL','COMMUNICATION'),
+    -> JOINING_DATE DATE
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DESC COMPANY_STAFF;
++--------------+----------------------------------------------------+------+-----+---------+-------+
+| Field        | Type                                               | Null | Key | Default | Extra |
++--------------+----------------------------------------------------+------+-----+---------+-------+
+| EMPID        | int                                                | YES  |     | NULL    |       |
+| AGE          | tinyint                                            | YES  |     | NULL    |       |
+| EXPERIENCE   | smallint                                           | YES  |     | NULL    |       |
+| GENDER       | char(1)                                            | YES  |     | NULL    |       |
+| EMP_NAME     | varchar(50)                                        | YES  |     | NULL    |       |
+| ADDRESS      | tinytext                                           | YES  |     | NULL    |       |
+| SALARY       | decimal(10,2)                                      | YES  |     | NULL    |       |
+| DEPARTEMENT  | enum('HR','IT','SALES','FINANCE','SUPPORT')        | YES  |     | NULL    |       |
+| SKILLS       | set('JAVA','PYTHON','SQL','EXCEL','COMMUNICATION') | YES  |     | NULL    |       |
+| JOINING_DATE | date                                               | YES  |     | NULL    |       |
++--------------+----------------------------------------------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
