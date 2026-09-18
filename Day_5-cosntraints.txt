@@ -1,0 +1,200 @@
+Sql day_5:
+------------
+
+Constraints are rules applied to a table columns in MySQL to ensure that only valid and accurate data is stored in the database..
+
+
+in simple words:
+----------------
+
+constraints = rules that control the data entered into a table.
+
+why do we use constraints?
+----------------------------
+
+constraints are used to 
+
+1. Maintain data integrity 
+2. prevent invalid data entry.
+3. Avoid duplicate records.
+4. Ensures relationships b/w tables, make the database reliable and consistent.
+
+
+
+integrity constraints
+-----------------------
+
+1. not null 
+-----------
+The not null constraints ensures that a column cannot contain NUll(empty) values. Every row must have a values for that column.
+not null: doesn't allow null values. 
+------------
+2. unique:
+-----------------
+The unique key constraints ensures that all values in a column are different, duplicate values are not allowed. 
+-------------------------
+3. primary key:
+------------------
+combination of unique+not null
+--------------------------
+4. composite key:
+--------------------
+If we applied more than one column as primary keys then we should go for composite key constaints this contain is applicable only for table level not at column-level. 
+------------------------------
+5. foreign key
+------------------------
+A foreign key creates a relationship b/w two tables. It ensures that value in the child table must already exsists in the parent table...
+------------------------
+6. default
+------------
+The default constaint automatically assigns a predefined value if no value is provided during insertion.
+------------------
+7. check
+------------
+The check constaint ensures that values satisfy a specified condition before insertion or update.
+-----------
+
+Referential Actions.
+---------------------
+
+Referential actions define what happens to child table data when parent data is updated or deleted.
+
+on delete cascade, on Update cascade
+
+on delete set null on update set null,
+
+
+EG:
+mysql> CREATE TABLE DOCTORS(
+    -> DOC_ID INT PRIMARY KEY,
+    -> DOC_NAME VARCHAR(100),
+    -> SALARY DECIMAL(10,2),
+    -> DID INT,
+    -> FOREIGN KEY(DID)
+    -> REFERENCES DEPARTMENTS(DID)
+    -> ON DELETE SET NULL ON UPDATE SET NULL
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> INSERT INTO DEPARTMENTS VALUES(1,CARDIO);
+ERROR 1054 (42S22): Unknown column 'CARDIO' in 'field list'
+mysql> INSERT INTO DEPARTMENTS VALUES(1,'CARDIO');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO DEPARTMENTS VALUES(2,'NEURO',3,'ORTHO');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO DEPARTMENTS(DID, DNAME) VALUES(2,'NEURO',3,'ORTHO');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO DEPARTMENTS(DID, DNAME) VALUES(2,'NEURO'),(3,'ORTHO');
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * DEPARTMENTS;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DEPARTMENTS' at line 1
+mysql> SELECT * FROM DEPARTMENTS;
++-----+--------+
+| DID | DNAME  |
++-----+--------+
+|   1 | CARDIO |
+|   2 | NEURO  |
+|   3 | ORTHO  |
++-----+--------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO DOCTORS(DOC_ID,DOC)
+    -> ^C
+mysql> INSERT INTO DOCTORS(DOC_ID,DOC_NAME,SALARY,DID)VALUES(1,'RAM',30000,2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO DOCTORS(DOC_ID,DOC_NAME,SALARY,DID)VALUES(2,'MOHAN',30000,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO DOCTORS(DOC_ID,DOC_NAME,SALARY,DID)VALUES(2,'MOHAN',30000,2);
+ERROR 1062 (23000): Duplicate entry '2' for key 'doctors.PRIMARY'
+mysql> SELECT * FROM DOCTORS;
++--------+----------+----------+------+
+| DOC_ID | DOC_NAME | SALARY   | DID  |
++--------+----------+----------+------+
+|      1 | RAM      | 30000.00 |    2 |
+|      2 | MOHAN    | 30000.00 |    3 |
++--------+----------+----------+------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT* FROM DOCTORS;
++--------+----------+----------+------+
+| DOC_ID | DOC_NAME | SALARY   | DID  |
++--------+----------+----------+------+
+|      1 | RAM      | 30000.00 |    2 |
+|      2 | MOHAN    | 30000.00 |    3 |
+|      3 | RAJU     | 40000.00 |    3 |
++--------+----------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO DOCTORS(DOC_ID,DOC_NAME,SALARY,3) VALUES(4,'RAMU',40000,3);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '3) VALUES(4,'RAMU',40000,3)' at line 1
+mysql> INSERT INTO DOCTORS(DOC_ID,DOC_NAME,SALARY,DID) VALUES(4,'RAJU',40000,3);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT* FROM DOCTORS;
++--------+----------+----------+------+
+| DOC_ID | DOC_NAME | SALARY   | DID  |
++--------+----------+----------+------+
+|      1 | RAM      | 30000.00 |    2 |
+|      2 | MOHAN    | 30000.00 |    3 |
+|      3 | RAJU     | 40000.00 |    3 |
+|      4 | RAJU     | 40000.00 |    3 |
++--------+----------+----------+------+
+4 rows in set (0.00 sec)
+
+mysql> DELETE EMPLOYEES WHERE DID = 2;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'WHERE DID = 2' at line 1
+mysql> DELETE FROM EMPLOYEES WHERE DID = 2;
+ERROR 1054 (42S22): Unknown column 'DID' in 'where clause'
+mysql> DELETE FROM DEPARTMENT WHERE DID = 2;
+ERROR 1146 (42S02): Table 'pfs6.department' doesn't exist
+mysql> DELETE FROM DEPARTMENTS WHERE DID = 2;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT* FROM DOCTORS;
++--------+----------+----------+------+
+| DOC_ID | DOC_NAME | SALARY   | DID  |
++--------+----------+----------+------+
+|      1 | RAM      | 30000.00 | NULL |
+|      2 | MOHAN    | 30000.00 |    3 |
+|      3 | RAJU     | 40000.00 |    3 |
+|      4 | RAJU     | 40000.00 |    3 |
++--------+----------+----------+------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM DEPARTMENTS;
++-----+--------+
+| DID | DNAME  |
++-----+--------+
+|   1 | CARDIO |
+|   3 | ORTHO  |
++-----+--------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO DEPARTMENTS VALUES(2,'NEURO');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM DEPARTMENTS;
++-----+--------+
+| DID | DNAME  |
++-----+--------+
+|   1 | CARDIO |
+|   2 | NEURO  |
+|   3 | ORTHO  |
++-----+--------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT* FROM DOCTORS;
++--------+----------+----------+------+
+| DOC_ID | DOC_NAME | SALARY   | DID  |
++--------+----------+----------+------+
+|      1 | RAM      | 30000.00 | NULL |
+|      2 | MOHAN    | 30000.00 |    3 |
+|      3 | RAJU     | 40000.00 |    3 |
+|      4 | RAJU     | 40000.00 |    3 |
++--------+----------+----------+------+
+4 rows in set (0.00 sec)
