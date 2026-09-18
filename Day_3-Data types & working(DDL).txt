@@ -1,0 +1,556 @@
+delete
+---------
+1.removes specific rows from a table
+2.specific rows(based on condition)
+3.table structure intact
+
+truncate
+---------
+1.removes all rows, keeps structure same
+2.table structure intact
+3.performance is fast(bulk deletion
+
+
+drop
+------
+1.removes table or object
+table structure + data
+table structure will be removed
+performance is slow(row by row)
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 27
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> SHOW DATABASES
+    -> SHOW DATABASES;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SHOW DATABASES' at line 2
+mysql> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| da6                |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> USE DA6;
+Database changed
+mysql> SHOW TABLES;
++---------------+
+| Tables_in_da6 |
++---------------+
+| employees     |
+| staff_records |
++---------------+
+2 rows in set (0.00 sec)
+
+mysql> SHOW TABLE STAFF_RECORDS;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'STAFF_RECORDS' at line 1
+mysql> DESC STAFF_RECORDS;
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| Field           | Type                                               | Null | Key | Default | Extra |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+| COMPANY_NAME    | varchar(30)                                        | YES  |     | NULL    |       |
+| EMP_ID          | int                                                | YES  |     | NULL    |       |
+| AGE             | tinyint                                            | YES  |     | NULL    |       |
+| EXPERIENCE      | smallint                                           | YES  |     | NULL    |       |
+| GENDER          | char(1)                                            | YES  |     | NULL    |       |
+| EMPLOYEE_NAME   | varchar(60)                                        | YES  |     | NULL    |       |
+| QUALIFICATION   | varchar(30)                                        | YES  |     | NULL    |       |
+| ADDRESS         | tinytext                                           | YES  |     | NULL    |       |
+| SALARY          | decimal(15,9)                                      | YES  |     | NULL    |       |
+| DEPARTMENT      | enum('HR','IT','SALES','FINANCE','SUPPORT')        | YES  |     | NULL    |       |
+| STATUS          | varchar(30)                                        | YES  |     | NULL    |       |
+| SKILLS          | set('JAVA','PYTHON','SQL','EXCEL','COMMUNICATION') | YES  |     | NULL    |       |
+| DATE_OF_JOINING | date                                               | YES  |     | NULL    |       |
+| EMAIL           | tinytext                                           | YES  |     | NULL    |       |
++-----------------+----------------------------------------------------+------+-----+---------+-------+
+14 rows in set (0.01 sec)
+
+mysql> DESC EMPLOYEES;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| EMPID     | char(5)     | YES  |     | NULL    |       |
+| FIRSTNAME | varchar(50) | YES  |     | NULL    |       |
+| LASTTNAME | varchar(30) | YES  |     | NULL    |       |
+| AGE       | int         | YES  |     | NULL    |       |
+| DOJ       | date        | YES  |     | NULL    |       |
+| ADDRESS   | tinytext    | YES  |     | NULL    |       |
+| DEPT      | varchar(20) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> -- INSERT: insert into table-name(column-1,column-2,column-3,.......column-name-n)
+mysql> --values
+    ->
+    -> ^C
+mysql> INSERT INTO EMPLOYEES( EMPID,FIRSTNAME,LASTTNAME,AGE,DOJ,ADDRESS,DEPT)
+    -> VALUES
+    -> ('E001','SIDDHANTNANDHAN','SAAHO','35','2019-04-23','HYD','BOXOFFICE');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+---------+-----------+
+| EMPID | FIRSTNAME       | LASTTNAME | AGE  | DOJ        | ADDRESS | DEPT      |
++-------+-----------------+-----------+------+------------+---------+-----------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD     | BOXOFFICE |
++-------+-----------------+-----------+------+------------+---------+-----------+
+1 row in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEES( EMPID,FIRSTNAME,LASTTNAME,AGE,DOJ,ADDRESS,DEPT)
+    -> VALUES
+    -> ('E002','AMARENDRA','BAHUBALI','25','2017-04-23','HYD','PAN INDIA');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EMPLOYEES( EMPID,FIRSTNAME,LASTTNAME,AGE,DOJ,ADDRESS,DEPT)
+    -> VALUES
+    -> ('E003','SALAAR','DEVARATHA','45','2023-04-23','HYD','MASS ADDICTION');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+---------+----------------+
+| EMPID | FIRSTNAME       | LASTTNAME | AGE  | DOJ        | ADDRESS | DEPT           |
++-------+-----------------+-----------+------+------------+---------+----------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD     | BOXOFFICE      |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD     | PAN INDIA      |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD     | MASS ADDICTION |
++-------+-----------------+-----------+------+------------+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEES VALUES('E004','SURYAPUTRA','KARNA','40','2023-04-23','HYD','SCI-FI');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EMPLOYEES VALUES('E005','VENKAT','VARSHAM','20','2007-04-15','BNG','FEELGOOD');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+---------+----------------+
+| EMPID | FIRSTNAME       | LASTTNAME | AGE  | DOJ        | ADDRESS | DEPT           |
++-------+-----------------+-----------+------+------------+---------+----------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD     | BOXOFFICE      |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD     | PAN INDIA      |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD     | MASS ADDICTION |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD     | SCI-FI         |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG     | FEELGOOD       |
++-------+-----------------+-----------+------+------------+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEES MODIFY DEPT VARCHAR(30);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> DESC EMPLOYEES;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| EMPID     | char(5)     | YES  |     | NULL    |       |
+| FIRSTNAME | varchar(50) | YES  |     | NULL    |       |
+| LASTTNAME | varchar(30) | YES  |     | NULL    |       |
+| AGE       | int         | YES  |     | NULL    |       |
+| DOJ       | date        | YES  |     | NULL    |       |
+| ADDRESS   | tinytext    | YES  |     | NULL    |       |
+| DEPT      | varchar(30) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+---------+----------------+
+| EMPID | FIRSTNAME       | LASTTNAME | AGE  | DOJ        | ADDRESS | DEPT           |
++-------+-----------------+-----------+------+------------+---------+----------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD     | BOXOFFICE      |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD     | PAN INDIA      |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD     | MASS ADDICTION |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD     | SCI-FI         |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG     | FEELGOOD       |
++-------+-----------------+-----------+------+------------+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEES( EMPID,FIRSTNAME,AGE,ADDRESS,DEPT)
+    -> VALUES
+    -> ('E006','BILLA','45','MALAYSIA','STYLISH DON');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+----------+----------------+
+| EMPID | FIRSTNAME       | LASTTNAME | AGE  | DOJ        | ADDRESS  | DEPT           |
++-------+-----------------+-----------+------+------------+----------+----------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD      | BOXOFFICE      |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD      | PAN INDIA      |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD      | MASS ADDICTION |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD      | SCI-FI         |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG      | FEELGOOD       |
+| E006  | BILLA           | NULL      |   45 | NULL       | MALAYSIA | STYLISH DON    |
++-------+-----------------+-----------+------+------------+----------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> INSERT INTO EMPLOYEES( EMPID,FIRSTNAME,AGE,ADDRESS,DEPT)
+    -> VALUES
+    -> ('E007','MIRCHI','35','VIZ','FAMILY ENTERTAINER');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> INSERT INTO EMPLOYEES( EMPID,FIRSTNAME,DOJ,DEPT)
+    -> VALUES
+    -> ('E007','DARLING','35','2010-10-15','CLASSIC');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO EMPLOYEES( EMPID,FIRSTNAME,DOJ,DEPT)
+    -> VALUES
+    -> ('E007','DARLING','2010-10-15','CLASSIC');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| EMPID | FIRSTNAME       | LASTTNAME | AGE  | DOJ        | ADDRESS  | DEPT               |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD      | BOXOFFICE          |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD      | PAN INDIA          |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD      | MASS ADDICTION     |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD      | SCI-FI             |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG      | FEELGOOD           |
+| E006  | BILLA           | NULL      |   45 | NULL       | MALAYSIA | STYLISH DON        |
+| E007  | MIRCHI          | NULL      |   35 | NULL       | VIZ      | FAMILY ENTERTAINER |
+| E007  | DARLING         | NULL      | NULL | 2010-10-15 | NULL     | CLASSIC            |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEES MODIFY EMPID CHAR(5) PRIMARYKEY;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'PRIMARYKEY' at line 1
+mysql> ALTER TABLE EMPLOYEES MODIFY EMPID CHAR(5) PRIMARY KEY;
+ERROR 1062 (23000): Duplicate entry 'E007' for key 'employees.PRIMARY'
+mysql> SELECT * FROM EMPLOYEES WHERENEMPID='E003';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '='E003'' at line 1
+mysql> DESC EMPLOYEES;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| EMPID     | char(5)     | YES  |     | NULL    |       |
+| FIRSTNAME | varchar(50) | YES  |     | NULL    |       |
+| LASTTNAME | varchar(30) | YES  |     | NULL    |       |
+| AGE       | int         | YES  |     | NULL    |       |
+| DOJ       | date        | YES  |     | NULL    |       |
+| ADDRESS   | tinytext    | YES  |     | NULL    |       |
+| DEPT      | varchar(30) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEES SET LASTNAME='JAI' WHERE EMPID='E007;
+    '> ^C
+mysql> UPDATE EMPLOYEES SET LASTNAME='JAI' WHERE EMPID='E007;
+    '> ^C
+mysql> UPDATE EMPLOYEES SET EMPID='E008' WHERE FIRSTNAME='DARLING;
+    '> ^C
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| EMPID | FIRSTNAME       | LASTTNAME | AGE  | DOJ        | ADDRESS  | DEPT               |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD      | BOXOFFICE          |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD      | PAN INDIA          |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD      | MASS ADDICTION     |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD      | SCI-FI             |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG      | FEELGOOD           |
+| E006  | BILLA           | NULL      |   45 | NULL       | MALAYSIA | STYLISH DON        |
+| E007  | MIRCHI          | NULL      |   35 | NULL       | VIZ      | FAMILY ENTERTAINER |
+| E007  | DARLING         | NULL      | NULL | 2010-10-15 | NULL     | CLASSIC            |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEES SET EMPID='E008' WHERE FIRSTNAME='DARLING;
+    '> ^C
+mysql> UPDATE EMPLOYEES SET EMPID = 'E008' WHERE FIRSTNAME='DARLING';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| EMPID | FIRSTNAME       | LASTTNAME | AGE  | DOJ        | ADDRESS  | DEPT               |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD      | BOXOFFICE          |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD      | PAN INDIA          |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD      | MASS ADDICTION     |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD      | SCI-FI             |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG      | FEELGOOD           |
+| E006  | BILLA           | NULL      |   45 | NULL       | MALAYSIA | STYLISH DON        |
+| E007  | MIRCHI          | NULL      |   35 | NULL       | VIZ      | FAMILY ENTERTAINER |
+| E008  | DARLING         | NULL      | NULL | 2010-10-15 | NULL     | CLASSIC            |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEES SET LASTNAME='JAI' WHERE EMPID='E007';
+ERROR 1054 (42S22): Unknown column 'LASTNAME' in 'field list'
+mysql> UPDATE EMPLOYEES SET LASTNAME='JAI' WHERE FIRSTNAME='MIRCHI';
+ERROR 1054 (42S22): Unknown column 'LASTNAME' in 'field list'
+mysql> UPDATE EMPLOYEES SET LASTTNAME='JAI' WHERE FIRSTNAME='MIRCHI';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| EMPID | FIRSTNAME       | LASTTNAME | AGE  | DOJ        | ADDRESS  | DEPT               |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD      | BOXOFFICE          |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD      | PAN INDIA          |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD      | MASS ADDICTION     |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD      | SCI-FI             |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG      | FEELGOOD           |
+| E006  | BILLA           | NULL      |   45 | NULL       | MALAYSIA | STYLISH DON        |
+| E007  | MIRCHI          | JAI       |   35 | NULL       | VIZ      | FAMILY ENTERTAINER |
+| E008  | DARLING         | NULL      | NULL | 2010-10-15 | NULL     | CLASSIC            |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+8 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEES MODIFY EMPID CHAR(5) PRIMARY KEY;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMPLOYEES CHANGE LASTTNAME LASTNAME VARCHAR(30);
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE EMPLOYEES SET DOJ='2026-09-05' WHERE FIRSTNAME='MIRCHI';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| EMPID | FIRSTNAME       | LASTNAME  | AGE  | DOJ        | ADDRESS  | DEPT               |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD      | BOXOFFICE          |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD      | PAN INDIA          |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD      | MASS ADDICTION     |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD      | SCI-FI             |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG      | FEELGOOD           |
+| E006  | BILLA           | NULL      |   45 | NULL       | MALAYSIA | STYLISH DON        |
+| E007  | MIRCHI          | JAI       |   35 | 2026-09-05 | VIZ      | FAMILY ENTERTAINER |
+| E008  | DARLING         | NULL      | NULL | 2010-10-15 | NULL     | CLASSIC            |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEES SET LASTTNAME='PRABHAS' WHERE EMPID='E008';
+ERROR 1054 (42S22): Unknown column 'LASTTNAME' in 'field list'
+mysql> UPDATE EMPLOYEES SET LASTNAME='PRABHAS' WHERE EMPID='E008';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| EMPID | FIRSTNAME       | LASTNAME  | AGE  | DOJ        | ADDRESS  | DEPT               |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD      | BOXOFFICE          |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD      | PAN INDIA          |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD      | MASS ADDICTION     |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD      | SCI-FI             |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG      | FEELGOOD           |
+| E006  | BILLA           | NULL      |   45 | NULL       | MALAYSIA | STYLISH DON        |
+| E007  | MIRCHI          | JAI       |   35 | 2026-09-05 | VIZ      | FAMILY ENTERTAINER |
+| E008  | DARLING         | PRABHAS   | NULL | 2010-10-15 | NULL     | CLASSIC            |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEES SET DOJ='2026-08-05' WHERE FIRSTNAME='BILLA';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE EMPLOYEES SET LASTNAME='RANGA' WHERE EMPID='E006';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| EMPID | FIRSTNAME       | LASTNAME  | AGE  | DOJ        | ADDRESS  | DEPT               |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD      | BOXOFFICE          |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD      | PAN INDIA          |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD      | MASS ADDICTION     |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD      | SCI-FI             |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG      | FEELGOOD           |
+| E006  | BILLA           | RANGA     |   45 | 2026-08-05 | MALAYSIA | STYLISH DON        |
+| E007  | MIRCHI          | JAI       |   35 | 2026-09-05 | VIZ      | FAMILY ENTERTAINER |
+| E008  | DARLING         | PRABHAS   | NULL | 2010-10-15 | NULL     | CLASSIC            |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+8 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEES SET AGE='35' WHERE EMPID='E008';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| EMPID | FIRSTNAME       | LASTNAME  | AGE  | DOJ        | ADDRESS  | DEPT               |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD      | BOXOFFICE          |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD      | PAN INDIA          |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD      | MASS ADDICTION     |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD      | SCI-FI             |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG      | FEELGOOD           |
+| E006  | BILLA           | RANGA     |   45 | 2026-08-05 | MALAYSIA | STYLISH DON        |
+| E007  | MIRCHI          | JAI       |   35 | 2026-09-05 | VIZ      | FAMILY ENTERTAINER |
+| E008  | DARLING         | PRABHAS   |   35 | 2010-10-15 | NULL     | CLASSIC            |
++-------+-----------------+-----------+------+------------+----------+--------------------+
+8 rows in set (0.00 sec)
+
+mysql> DELETE FROM EMPLOYEES WHERE FIRSTNAME='BILLA';
+Query OK, 1 row affected (0.01 sec)
+
+mysql> SELECT * FROM EMPLOYEES;
++-------+-----------------+-----------+------+------------+---------+--------------------+
+| EMPID | FIRSTNAME       | LASTNAME  | AGE  | DOJ        | ADDRESS | DEPT               |
++-------+-----------------+-----------+------+------------+---------+--------------------+
+| E001  | SIDDHANTNANDHAN | SAAHO     |   35 | 2019-04-23 | HYD     | BOXOFFICE          |
+| E002  | AMARENDRA       | BAHUBALI  |   25 | 2017-04-23 | HYD     | PAN INDIA          |
+| E003  | SALAAR          | DEVARATHA |   45 | 2023-04-23 | HYD     | MASS ADDICTION     |
+| E004  | SURYAPUTRA      | KARNA     |   40 | 2023-04-23 | HYD     | SCI-FI             |
+| E005  | VENKAT          | VARSHAM   |   20 | 2007-04-15 | BNG     | FEELGOOD           |
+| E007  | MIRCHI          | JAI       |   35 | 2026-09-05 | VIZ     | FAMILY ENTERTAINER |
+| E008  | DARLING         | PRABHAS   |   35 | 2010-10-15 | NULL    | CLASSIC            |
++-------+-----------------+-----------+------+------------+---------+--------------------+
+7 rows in set (0.00 sec)
+
+mysql> --DROP: removes the table or object
+    -> ^C
+mysql> DROP TABLE EMPLOYEES;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CREATE TABLE employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(100),
+    ->     department VARCHAR(50),
+    ->     job_role VARCHAR(50),
+    ->     salary DECIMAL(10,2),
+    ->     joining_date DATE,
+    ->     city VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql>
+mysql> INSERT INTO employees
+    -> (emp_id, emp_name, department, job_role, salary, joining_date, city)
+    -> VALUES
+    -> (101, 'Ravi Kumar', 'IT', 'Developer', 45000, '2023-01-15', 'Vizag'),
+    -> (102, 'Priya Sharma', 'HR', 'HR Manager', 55000, '2022-06-20', 'Hyderabad'),
+    -> (103, 'Kiran Reddy', 'IT', 'Tester', 40000, '2023-03-10', 'Vizag'),
+    -> (104, 'Sneha Rao', 'Finance', 'Accountant', 48000, '2021-11-25', 'Chennai'),
+    -> (105, 'Arun Kumar', 'IT', 'Developer', 60000, '2020-08-18', 'Bangalore'),
+    -> (106, 'Divya Reddy', 'HR', 'Recruiter', 35000, '2024-01-05', 'Vizag'),
+    -> (107, 'Suresh Babu', 'Sales', 'Executive', 42000, '2022-09-12', 'Hyderabad'),
+    -> (108, 'Anjali Devi', 'IT', 'Developer', 70000, '2019-05-30', 'Chennai'),
+    -> (109, 'Mahesh Kumar', 'Sales', 'Manager', 65000, '2020-02-14', 'Bangalore'),
+    -> (110, 'Lakshmi Rao', 'Finance', 'Analyst', 52000, '2023-07-22', 'Hyderabad');
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++--------+--------------+------------+------------+----------+--------------+-----------+
+| emp_id | emp_name     | department | job_role   | salary   | joining_date | city      |
++--------+--------------+------------+------------+----------+--------------+-----------+
+|    101 | Ravi Kumar   | IT         | Developer  | 45000.00 | 2023-01-15   | Vizag     |
+|    102 | Priya Sharma | HR         | HR Manager | 55000.00 | 2022-06-20   | Hyderabad |
+|    103 | Kiran Reddy  | IT         | Tester     | 40000.00 | 2023-03-10   | Vizag     |
+|    104 | Sneha Rao    | Finance    | Accountant | 48000.00 | 2021-11-25   | Chennai   |
+|    105 | Arun Kumar   | IT         | Developer  | 60000.00 | 2020-08-18   | Bangalore |
+|    106 | Divya Reddy  | HR         | Recruiter  | 35000.00 | 2024-01-05   | Vizag     |
+|    107 | Suresh Babu  | Sales      | Executive  | 42000.00 | 2022-09-12   | Hyderabad |
+|    108 | Anjali Devi  | IT         | Developer  | 70000.00 | 2019-05-30   | Chennai   |
+|    109 | Mahesh Kumar | Sales      | Manager    | 65000.00 | 2020-02-14   | Bangalore |
+|    110 | Lakshmi Rao  | Finance    | Analyst    | 52000.00 | 2023-07-22   | Hyderabad |
++--------+--------------+------------+------------+----------+--------------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> ALTER TABLE EMPLOYEES ADD EMAIL VARCHAR(100) ;
+Query OK, 0 rows affected (0.03 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMPLOYEES ADD PHONE VARCHAR(15) ;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMPLOYEES ADD PHONE VARCHAR(15) ;
+ERROR 1060 (42S21): Duplicate column name 'PHONE'
+mysql> ALTER TABLE EMPLOYEES CHANGE CITY VARCHAR(100);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'VARCHAR(100)' at line 1
+mysql> ALTER TABLE EMPLOYEES MODIFY CITY VARCHAR(100);
+Query OK, 10 rows affected (0.05 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> ALTER TABLE EMPLOYEES CHANGE JOBROLE TO DESIGNATION ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TO DESIGNATION' at line 1
+mysql> ALTER TABLE EMPLOYEES CHANGE JOB_ROLE TO DESIGNATION ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TO DESIGNATION' at line 1
+mysql> ALTER TABLE EMPLOYEES CHANGE JOB_ROLE  DESIGNATION VARCHAR(100) ;
+Query OK, 10 rows affected (0.10 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> alter table employees drop column phone;
+Query OK, 0 rows affected (0.02 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+| emp_id | emp_name     | department | DESIGNATION | salary   | joining_date | CITY      | EMAIL |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+|    101 | Ravi Kumar   | IT         | Developer   | 45000.00 | 2023-01-15   | Vizag     | NULL  |
+|    102 | Priya Sharma | HR         | HR Manager  | 55000.00 | 2022-06-20   | Hyderabad | NULL  |
+|    103 | Kiran Reddy  | IT         | Tester      | 40000.00 | 2023-03-10   | Vizag     | NULL  |
+|    104 | Sneha Rao    | Finance    | Accountant  | 48000.00 | 2021-11-25   | Chennai   | NULL  |
+|    105 | Arun Kumar   | IT         | Developer   | 60000.00 | 2020-08-18   | Bangalore | NULL  |
+|    106 | Divya Reddy  | HR         | Recruiter   | 35000.00 | 2024-01-05   | Vizag     | NULL  |
+|    107 | Suresh Babu  | Sales      | Executive   | 42000.00 | 2022-09-12   | Hyderabad | NULL  |
+|    108 | Anjali Devi  | IT         | Developer   | 70000.00 | 2019-05-30   | Chennai   | NULL  |
+|    109 | Mahesh Kumar | Sales      | Manager     | 65000.00 | 2020-02-14   | Bangalore | NULL  |
+|    110 | Lakshmi Rao  | Finance    | Analyst     | 52000.00 | 2023-07-22   | Hyderabad | NULL  |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+10 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEES SET salary='50000.00' WHERE emp_id = '101';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+| emp_id | emp_name     | department | DESIGNATION | salary   | joining_date | CITY      | EMAIL |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+|    101 | Ravi Kumar   | IT         | Developer   | 50000.00 | 2023-01-15   | Vizag     | NULL  |
+|    102 | Priya Sharma | HR         | HR Manager  | 55000.00 | 2022-06-20   | Hyderabad | NULL  |
+|    103 | Kiran Reddy  | IT         | Tester      | 40000.00 | 2023-03-10   | Vizag     | NULL  |
+|    104 | Sneha Rao    | Finance    | Accountant  | 48000.00 | 2021-11-25   | Chennai   | NULL  |
+|    105 | Arun Kumar   | IT         | Developer   | 60000.00 | 2020-08-18   | Bangalore | NULL  |
+|    106 | Divya Reddy  | HR         | Recruiter   | 35000.00 | 2024-01-05   | Vizag     | NULL  |
+|    107 | Suresh Babu  | Sales      | Executive   | 42000.00 | 2022-09-12   | Hyderabad | NULL  |
+|    108 | Anjali Devi  | IT         | Developer   | 70000.00 | 2019-05-30   | Chennai   | NULL  |
+|    109 | Mahesh Kumar | Sales      | Manager     | 65000.00 | 2020-02-14   | Bangalore | NULL  |
+|    110 | Lakshmi Rao  | Finance    | Analyst     | 52000.00 | 2023-07-22   | Hyderabad | NULL  |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+10 rows in set (0.00 sec)
+
+mysql> UPDATE EMPLOYEES SET salary= salary+(salary*0.10) where department = 'it';
+Query OK, 4 rows affected (0.01 sec)
+Rows matched: 4  Changed: 4  Warnings: 0
+
+mysql> SELECT * FROM EMPLOYEES;
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+| emp_id | emp_name     | department | DESIGNATION | salary   | joining_date | CITY      | EMAIL |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+|    101 | Ravi Kumar   | IT         | Developer   | 55000.00 | 2023-01-15   | Vizag     | NULL  |
+|    102 | Priya Sharma | HR         | HR Manager  | 55000.00 | 2022-06-20   | Hyderabad | NULL  |
+|    103 | Kiran Reddy  | IT         | Tester      | 44000.00 | 2023-03-10   | Vizag     | NULL  |
+|    104 | Sneha Rao    | Finance    | Accountant  | 48000.00 | 2021-11-25   | Chennai   | NULL  |
+|    105 | Arun Kumar   | IT         | Developer   | 66000.00 | 2020-08-18   | Bangalore | NULL  |
+|    106 | Divya Reddy  | HR         | Recruiter   | 35000.00 | 2024-01-05   | Vizag     | NULL  |
+|    107 | Suresh Babu  | Sales      | Executive   | 42000.00 | 2022-09-12   | Hyderabad | NULL  |
+|    108 | Anjali Devi  | IT         | Developer   | 77000.00 | 2019-05-30   | Chennai   | NULL  |
+|    109 | Mahesh Kumar | Sales      | Manager     | 65000.00 | 2020-02-14   | Bangalore | NULL  |
+|    110 | Lakshmi Rao  | Finance    | Analyst     | 52000.00 | 2023-07-22   | Hyderabad | NULL  |
++--------+--------------+------------+-------------+----------+--------------+-----------+-------+
+10 rows in set (0.00 sec)
