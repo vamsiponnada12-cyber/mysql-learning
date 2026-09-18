@@ -1,0 +1,153 @@
+MY SQL
+==========================================================================================
+what is data
+-------------
+raw facts or figure without context 
+example:-
+ename,esalary,eid
+
+What is field?
+--------------- 
+smallest unit of data in database(column/attribute)
+
+what is record?
+-----------------
+collection of related fields(row/tuple)
+
+what id database?
+-------------------
+organized collection of related records stored together 
+example:-
+an employee database containing all employee records
+
+client-server-arch
+----------------------
+
+client :- The role of the clint in client-server-arch is to send request to the server and to get response from the server.
+server:-  Server is a software the role of the server in client - server arch is to take request from the clients. if the request is valid request it will generate some response  and we can handover that response to client. if the client request is not a valid request it will raise some error status codes.
+
+protocol:_
+
+it has a set of rules and regulations. the role of the protocol in client-server-arch is to send request from clint to server
+
+
+data models in DBMS
+-----------------------------------------
+
+physical data model 
+logical data model
+hierarchal data model
+Network data model 
+relational data models (RDBMS)
+entity relationship (E-R Model
+ 
+
+Identifiers
+====================
+Rules :-
+spacers are not consider to declare identified 
+name = 'yashu'
+identifier should not start with digit:
+reservewords not consider to declare identifiers 
+max length to declare identifiers is 15
+
+SQL(structure query language)
+============================
+SQl (structure query language) is a standardized programming language  specially designed for managing  and manipulating relational databases. it provides a declarative syntax that allows users to define what data they want retrieve , insert , update or delate without specifying  exactly how database should execute these operations.
+
+
+
+SQL Commands
+=====================
+DDL : data definition language 
+----------------------------------------------
+CREATE :- CREATE a new database objects such as tables, database , views , indexes , or triggers ....etc
+how to create database/ schema? 
+-------------------------------
+synatax :- CREATE DATABASE database-name;
+           or
+           CREATE SCHEMA schema-name;
+
+how to create table?
+-------------------
+syntax :-
+         CREATE TABLE table-name(
+         column-name datatype(size) constraint,
+	 column-name datatype(size) constraint,
+	 column-name datatype(size) constraint,
+	 ---------------------------------------
+         ---------------------------------------
+	 column-name datatype(size) constraint,
+
+
+
+
+ALTERE
+DROP   :- Permanently  delates an exiting database objects ( table , database ,views , index , ) along with data   
+how to drop database/schema?
+-----------------------------
+syntax
+-------
+drop database database-name
+           or
+drop schema database-name
+
+
+how to drop a table?
+--------------------
+
+
+TRUNCATE
+
+
+RENAME
+
+
+
+
+defines and modifies the structure of database objects(table , schemes , indexes)
+
+DML : data manipulation language 
+-----------------------------------------
+managed the data stored within database objects ( insert , update , delate )
+
+DCL : data control language 
+-----------------------------------
+manage permissions and accesses control on data base objects.
+
+TCL : transaction control language 
+-----------------------------------
+manages transactions to maintain data integrity
+
+DQL : data query language 
+--------------------------------
+
+used to fetch/retrieve data from the database.
+
+
+
+
+
+
+
+
+
+1 2 3 4 5 6 7 
+0 1 2 3 4 5 6 7 8 9
+AI FAQ Chatbot + Appointment Booking Agent
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
