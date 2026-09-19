@@ -1,0 +1,198 @@
+Dcl commands:
+-------------
+
+how to create user
+-----------------------
+ CREATE USER PREMU IDENTIFIED BY 'PREMU123;
+ CREATE USER FAYAZ IDENTIFIED BY 'FAYAZ123';
+
+grant : syntax--> grant previleges on table to username;
+GRANT SELECT,INSERT,UPDATE ON STUDENT TO PREMU;
+
+revoke : syntax --> revoke previleges on table from username;
+ REVOKE INSERT, UPDATE ON STUDENT FROM PREMU;
+Query OK, 0 rows affected (0.01 sec)
+
+
+auto_increment:
+mysql> create table products(
+    -> productid int auto_increment primary key,
+    -> pname varchar(50),
+    -> price decimal(10,2),
+    -> quantity int,
+    -> total_amount decimal(10,2)generated always as(price * quantity)stored
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+create table from using another table
+
+computed columns:
+--------------------
++-----------+--------+----------+----------+--------------+
+| productid | pname  | price    | quantity | total_amount |
++-----------+--------+----------+----------+--------------+
+|         1 | mobile | 19999.00 |        2 |     39998.00 |
+|         2 | mobile | 19999.00 |        2 |     39998.00 |
+|         3 | laptop | 50000.25 |        2 |    100000.50 |
++-----------+--------+----------+----------+--------------+
+
+HOW TO LOGIN WITH THE USERNAME CREATED
+------------------------
+
+PATH : C:PROGRAMFILES:MYSQL:MYSQL SERVER 8.0:BIN
+
+GO TO CMD
+-----------
+COMMAND : mysql -u PREMU -p
+
+practice
+-----------
+mysql> INSERT INTO STUDENTS VALUES(111,MANOJ,MANOJ@CODEGNAN);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@CODEGNAN)' at line 1
+mysql> INSERT INTO STUDENT VALUES(111,MANOJ,MANOJ@CODEGNAN);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '@CODEGNAN)' at line 1
+mysql> INSERT INTO STUDENT VALUES(111,'MANOJ','MANOJ@CODEGNAN');
+Query OK, 1 row affected (0.04 sec)
+
+mysql> SELECT * FROM STUDENT;
++-----+-------+----------------+
+| SNO | SNAME | SEMAIL         |
++-----+-------+----------------+
+| 111 | MANOJ | MANOJ@CODEGNAN |
++-----+-------+----------------+
+1 row in set (0.00 sec)
+
+mysql> CREATE USER PREMU IDENTIFIED BY 'PREMU123';
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> CREATE USER FAYAZ IDENTIFIED BY 'FAYAZ123';
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> GRANT SELECT,INSERT,UPDATE ON STUDENTS TO RAMU;
+ERROR 1146 (42S02): Table 'pfs6.STUDENTS' doesn't exist
+mysql> GRANT SELECT,INSERT,UPDATE ON STUDENT TO RAMU;
+ERROR 1410 (42000): You are not allowed to create a user with GRANT
+mysql> GRANT SELECT,INSERT,UPDATE ON STUDENT TO PREMU;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> GRANT SELECT,DROP ON STUDENT TO FAYAZ;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> REVOKE INSERT, UPDATE ON STUDENT FROM PREMU;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> REVOKE SELECT ON STUDENT FROM KRISHNA;
+ERROR 1147 (42000): There is no such grant defined for user 'KRISHNA' on host '%' on table 'student'
+mysql> REVOKE SELECT ON STUDENT FROM FAYAZ;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> create table emp(
+    -> emp_id primary key,
+    -> ename varchar(50),
+    -> esal decimal(10,2)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'primary key,
+ename varchar(50),
+esal decimal(10,2)
+)' at line 2
+mysql> create table emp(
+    -> emp_id primary key,
+    -> ^C
+mysql>
+mysql> create table emp(
+    -> emp_id int primary key,
+    -> ename varchar(50),
+    -> esal decimal(10,2)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> drop table emp;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> create table emp(
+    -> emp_id int auto_increment primary key,
+    -> ename varchar(50),
+    -> esal decimal(10,2)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> insert into emp values('raju','50000');
+ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> insert into emp(ename, esal) values('raju','50000');
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from emp;
++--------+-------+----------+
+| emp_id | ename | esal     |
++--------+-------+----------+
+|      1 | raju  | 50000.00 |
++--------+-------+----------+
+1 row in set (0.00 sec)
+
+mysql> create table products(
+    -> productid int auto_increment primary key,
+    -> pname varchar(50),
+    -> price int,
+    -> quantity int,
+    -> total_amount(10,2)generated always as(price * quantity)stored
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(10,2)generated always as(price * quantity)stored
+)' at line 6
+mysql> create table products(
+    -> productid int auto_increment primary key,
+    -> pname varchar(50),
+    -> price int,
+    -> quantity int,
+    -> total_amount(10,2)generated always as(price * quantity)stored
+    -> ^C
+mysql> create table products(
+    -> productid int auto_increment primary key,
+    -> pname varchar(50),
+    -> price decimal(10,2),
+    -> quantity int,
+    -> total_amount decimal(10,2)generated always as(price * quantity)stored
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show table products;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'products' at line 1
+mysql> show products;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'products' at line 1
+mysql> desc products;
++--------------+---------------+------+-----+---------+------------------+
+| Field        | Type          | Null | Key | Default | Extra            |
++--------------+---------------+------+-----+---------+------------------+
+| productid    | int           | NO   | PRI | NULL    | auto_increment   |
+| pname        | varchar(50)   | YES  |     | NULL    |                  |
+| price        | decimal(10,2) | YES  |     | NULL    |                  |
+| quantity     | int           | YES  |     | NULL    |                  |
+| total_amount | decimal(10,2) | YES  |     | NULL    | STORED GENERATED |
++--------------+---------------+------+-----+---------+------------------+
+5 rows in set (0.01 sec)
+
+mysql> insert into products(pname, price, quantity)values('mobile','19999.00',2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from products;
++-----------+--------+----------+----------+--------------+
+| productid | pname  | price    | quantity | total_amount |
++-----------+--------+----------+----------+--------------+
+|         1 | mobile | 19999.00 |        2 |     39998.00 |
++-----------+--------+----------+----------+--------------+
+1 row in set (0.00 sec)
+
+mysql> insert into products(pname, price, quantity)values('mobile','19999.00',2),('laptop','50000.25',2);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from products;
++-----------+--------+----------+----------+--------------+
+| productid | pname  | price    | quantity | total_amount |
++-----------+--------+----------+----------+--------------+
+|         1 | mobile | 19999.00 |        2 |     39998.00 |
+|         2 | mobile | 19999.00 |        2 |     39998.00 |
+|         3 | laptop | 50000.25 |        2 |    100000.50 |
++-----------+--------+----------+----------+--------------+
+3 rows in set (0.00 sec)
+
+mysql>
