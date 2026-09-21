@@ -1,0 +1,685 @@
+DATE AND TIME FUNCTIONS
+-------------------------------------------------------
+
+CURDATE()-->>CURRENT DATE
+CURTIME()-->>CURRENT TIME
+NOW()-->> CURRENT DATE AND TIME
+DATE():-EXTRACTED DATE PART
+TIME():-EXTRACTED TIMEPART
+YEAR():-EXTRACT YEAR
+MONTH():-EXTRACT MONTH
+DAY()/DAYOFMONTH():EXTRACT DAY OF MONTH
+WEEK():-EXTRACT WEEK NUMBER
+DAYOFWEEK():-EXTRACT DAY OF THE WEEK
+DATE_ADD():-ADD TIME TO A DATE
+DATE_SUB():-SUB TIME FROM A DATE
+DATEDIFF():-DIFFERENCE BETWEEN TWO DATES
+TIMESTAMPDIFF():-DIFFERENCE BETWEEN TWO DATEIME VALUES
+
+
+
+=====================================================================================================================================================
+
+mysql> SELECT CURDATE()AS CURRENT__DTE;
++--------------+
+| CURRENT__DTE |
++--------------+
+| 2026-09-16   |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CURTIME()AS CURRENT__TIME;
++---------------+
+| CURRENT__TIME |
++---------------+
+| 14:21:43      |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT NOW()AS CURRENT_DATE_TIME;
++---------------------+
+| CURRENT_DATE_TIME   |
++---------------------+
+| 2026-09-16 14:22:19 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SYSDATE();
++---------------------+
+| SYSDATE()           |
++---------------------+
+| 2026-09-16 14:22:31 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE(NOW())AS EXTRACTED_DATE:
+    -> SELECT DATE(NOW())AS EXTRACTED_DATE:;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':
+SELECT DATE(NOW())AS EXTRACTED_DATE:' at line 1
+mysql> SELECT DATE(NOW())AS EXTRACTED_DATE;
++----------------+
+| EXTRACTED_DATE |
++----------------+
+| 2026-09-16     |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT TIME(NOW())AS EXTRACTED_TIME;
++----------------+
+| EXTRACTED_TIME |
++----------------+
+| 14:25:10       |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT YEAR(NOW())AS EXTRACTED_YEAR;
++----------------+
+| EXTRACTED_YEAR |
++----------------+
+|           2026 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MONTH(NOW())AS MONTH_PART;
++------------+
+| MONTH_PART |
++------------+
+|          9 |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAY(NOW())AS DAY_PART;
++----------+
+| DAY_PART |
++----------+
+|       16 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT WEEK(NOW())AS WEEK_NUMBER;
++-------------+
+| WEEK_NUMBER |
++-------------+
+|          37 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYOFWEEK(NOW())AS DAY_OF_WEEK;
++-------------+
+| DAY_OF_WEEK |
++-------------+
+|           4 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_ADD(NOW(), INTERVAL 100 DAYS)AS NEW_DATE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DAYS)AS NEW_DATE' at line 1
+mysql> SELECT DATE_ADD(NOW(), INTERVAL 100 DAY)AS NEW_DATE;
++---------------------+
+| NEW_DATE            |
++---------------------+
+| 2026-12-25 14:30:40 |
++---------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT DATE_SUB(NOW(), INTERVAL 100 DAY)AS NEW_DATE;
++---------------------+
+| NEW_DATE            |
++---------------------+
+| 2026-06-08 14:30:53 |
++---------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DATE_DIFF(NOW(),'2023_03_20')AS DAYS_DIFF;
+ERROR 1046 (3D000): No database selected
+mysql> SELECT DATEDIFF(NOW(),'2023_03_20')AS DAYS_DIFF;
++-----------+
+| DAYS_DIFF |
++-----------+
+|      1276 |
++-----------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> SELECT STR_TO_DATE('2023-03-20','%Y-%m-%d')AS FORMATTED_DATE;
++----------------+
+| FORMATTED_DATE |
++----------------+
+| 2023-03-20     |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SLECT_FORMATE(NOW(),'%W,%M,%d,%Y')as formatted_date;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SLECT_FORMATE(NOW(),'%W,%M,%d,%Y')as formatted_date' at line 1
+mysql> SLECT_FORMAT(NOW(),'%W,%M,%d,%Y')as formatted_date;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SLECT_FORMAT(NOW(),'%W,%M,%d,%Y')as formatted_date' at line 1
+mysql> SeLECT_FORMAT(NOW(),'%W,%M,%d,%Y')as formatted_date;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SeLECT_FORMAT(NOW(),'%W,%M,%d,%Y')as formatted_date' at line 1
+mysql> SELECT_FORMAT(NOW(),'%W,%M,%d,%Y')as formatted_date;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT_FORMAT(NOW(),'%W,%M,%d,%Y')as formatted_date' at line 1
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql>
+mysql> SELECT DATE_FORMAT(NOW(),'%W,%M,%d,%Y')as formatted_date;
++-----------------------------+
+| formatted_date              |
++-----------------------------+
+| Wednesday,September,16,2026 |
++-----------------------------+
+1 row in set (0.00 sec)
+
+mysql> SLECT LAST_DAY(NOW())AS LAST_DAY_OF_MONTH;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SLECT LAST_DAY(NOW())AS LAST_DAY_OF_MONTH' at line 1
+mysql> SELECT LAST_DAY(NOW())AS LAST_DAY_OF_MONTH;
++-------------------+
+| LAST_DAY_OF_MONTH |
++-------------------+
+| 2026-09-30        |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MAKEDATE(2024,60)AS RESULT_DATE;
++-------------+
+| RESULT_DATE |
++-------------+
+| 2024-02-29  |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MAKETIME(14,25,12)AS RESULT_TIME;
++-------------+
+| RESULT_TIME |
++-------------+
+| 14:25:12    |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MONTHNAME(NOW())AS MONTH_NAME;
++------------+
+| MONTH_NAME |
++------------+
+| September  |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DAYNAME(NOW())AS DAY_NAME;
++-----------+
+| DAY_NAME  |
++-----------+
+| Wednesday |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT QUARTER(NOW())AS QUARTER_NUMBER;
++----------------+
+| QUARTER_NUMBER |
++----------------+
+|              3 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SEC_TO_TIME(3661)AS TIME_VALUE;
++------------+
+| TIME_VALUE |
++------------+
+| 01:01:01   |
++------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT TIME_TO_SEC('02-02-02')AS TIME_VALUE;
++------------+
+| TIME_VALUE |
++------------+
+|          2 |
++------------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> SELECT TIME_TO_SEC('02-02-02')AS SEC_VALUE;
++-----------+
+| SEC_VALUE |
++-----------+
+|         2 |
++-----------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> SELECT TIME_TO_SEC('01-01-01')AS SEC_VALUE;
++-----------+
+| SEC_VALUE |
++-----------+
+|         1 |
++-----------+
+1 row in set, 1 warning (0.00 sec)
+
+mysql> SELECT TIME_TO_SEC('01:1:01')AS SEC_VALUE;
++-----------+
+| SEC_VALUE |
++-----------+
+|      3661 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT TIME_TO_SEC('02:02:02')AS SEC_VALUE;
++-----------+
+| SEC_VALUE |
++-----------+
+|      7322 |
++-----------+
+1 row in set (0.00 sec)
+
+mysql> CREATE TABLE employee_attendance
+    -> (
+    ->  emp_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->  emp_name VARCHAR(100),
+    ->  department VARCHAR(50),
+    ->  joining_date DATE,
+    ->  birth_date DATE,
+    ->  login_time DATETIME,
+    ->  logout_time DATETIME,
+    ->  salary DECIMAL(10,2)
+    -> );
+ERROR 1046 (3D000): No database selected
+mysql> USE DA6;
+Database changed
+mysql> CREATE TABLE employee_attendance
+    -> (
+    ->  emp_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->  emp_name VARCHAR(100),
+    ->  department VARCHAR(50),
+    ->  joining_date DATE,
+    ->  birth_date DATE,
+    ->  login_time DATETIME,
+    ->  logout_time DATETIME,
+    ->  salary DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO employee_attendance
+    -> (emp_name, department, joining_date, birth_date, login_time, logout_time, salary)
+    -> VALUES
+    -> ('Rahul','IT','2021-06-15','1998-05-10','2024-11-20 09:05:10','2024-11-20 18:15:30',55000),
+    -> ('Sneha','HR','2020-03-21','1996-11-18','2024-11-21 08:55:20','2024-11-21 17:45:50',48000),
+    -> ('Arjun','Finance','2019-08-10','1994-07-30','2024-11-22 09:15:45','2024-11-22 18:35:20',62000),
+    -> ('Priya','IT','2022-01-05','2000-01-25','2024-11-23 09:00:00','2024-11-23 17:55:40',51000),
+    -> ('Kiran','Admin','2018-12-11','1992-09-15','2024-11-24 08:40:30','2024-11-24 17:30:00',45000),
+    -> ('Anjali','Testing','2023-04-17','1999-12-20','2024-11-25 09:12:10','2024-11-25 18:05:00',47000),
+    -> ('Vijay','IT','2021-09-14','1997-04-08','2024-11-26 09:08:15','2024-11-26 18:20:40',59000),
+    -> ('Divya','HR','2019-10-19','1995-06-11','2024-11-27 08:50:30','2024-11-27 17:42:15',50000),
+    -> ('Ramesh','Finance','2017-07-01','1991-08-14','2024-11-28 09:03:00','2024-11-28 18:12:00',70000),
+    -> ('Pooja','Testing','2022-05-09','2001-03-19','2024-11-29 09:18:50','2024-11-29 18:25:10',53000);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql>
+mysql> select*from  employee_attendance;
++--------+----------+------------+--------------+------------+---------------------+---------------------+----------+
+| emp_id | emp_name | department | joining_date | birth_date | login_time          | logout_time         | salary   |
++--------+----------+------------+--------------+------------+---------------------+---------------------+----------+
+|      1 | Rahul    | IT         | 2021-06-15   | 1998-05-10 | 2024-11-20 09:05:10 | 2024-11-20 18:15:30 | 55000.00 |
+|      2 | Sneha    | HR         | 2020-03-21   | 1996-11-18 | 2024-11-21 08:55:20 | 2024-11-21 17:45:50 | 48000.00 |
+|      3 | Arjun    | Finance    | 2019-08-10   | 1994-07-30 | 2024-11-22 09:15:45 | 2024-11-22 18:35:20 | 62000.00 |
+|      4 | Priya    | IT         | 2022-01-05   | 2000-01-25 | 2024-11-23 09:00:00 | 2024-11-23 17:55:40 | 51000.00 |
+|      5 | Kiran    | Admin      | 2018-12-11   | 1992-09-15 | 2024-11-24 08:40:30 | 2024-11-24 17:30:00 | 45000.00 |
+|      6 | Anjali   | Testing    | 2023-04-17   | 1999-12-20 | 2024-11-25 09:12:10 | 2024-11-25 18:05:00 | 47000.00 |
+|      7 | Vijay    | IT         | 2021-09-14   | 1997-04-08 | 2024-11-26 09:08:15 | 2024-11-26 18:20:40 | 59000.00 |
+|      8 | Divya    | HR         | 2019-10-19   | 1995-06-11 | 2024-11-27 08:50:30 | 2024-11-27 17:42:15 | 50000.00 |
+|      9 | Ramesh   | Finance    | 2017-07-01   | 1991-08-14 | 2024-11-28 09:03:00 | 2024-11-28 18:12:00 | 70000.00 |
+|     10 | Pooja    | Testing    | 2022-05-09   | 2001-03-19 | 2024-11-29 09:18:50 | 2024-11-29 18:25:10 | 53000.00 |
++--------+----------+------------+--------------+------------+---------------------+---------------------+----------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,DATE(LOGIN_TIME)AS LOGIN_DATE_ONLY FROM EMPLOYEE_ATTENDANCE;
++----------+-----------------+
+| EMP_NAME | LOGIN_DATE_ONLY |
++----------+-----------------+
+| Rahul    | 2024-11-20      |
+| Sneha    | 2024-11-21      |
+| Arjun    | 2024-11-22      |
+| Priya    | 2024-11-23      |
+| Kiran    | 2024-11-24      |
+| Anjali   | 2024-11-25      |
+| Vijay    | 2024-11-26      |
+| Divya    | 2024-11-27      |
+| Ramesh   | 2024-11-28      |
+| Pooja    | 2024-11-29      |
++----------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,TIME(LOGIN_TIME)AS LOGIN_TIME_ONLY FROM EMPLOYEE_ATTENDANCE;
++----------+-----------------+
+| EMP_NAME | LOGIN_TIME_ONLY |
++----------+-----------------+
+| Rahul    | 09:05:10        |
+| Sneha    | 08:55:20        |
+| Arjun    | 09:15:45        |
+| Priya    | 09:00:00        |
+| Kiran    | 08:40:30        |
+| Anjali   | 09:12:10        |
+| Vijay    | 09:08:15        |
+| Divya    | 08:50:30        |
+| Ramesh   | 09:03:00        |
+| Pooja    | 09:18:50        |
++----------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,YEAR(JOING_DATE)AS JOINING_YEAR FROM EMPLOYEE_ATTENDANCE;
+ERROR 1054 (42S22): Unknown column 'JOING_DATE' in 'field list'
+mysql> SELECT EMP_NAME,YEAR(JOININGG_DATE)AS JOINING_YEAR FROM EMPLOYEE_ATTENDANCE;
+ERROR 1054 (42S22): Unknown column 'JOININGG_DATE' in 'field list'
+mysql> SELECT EMP_NAME,YEAR(JOINING_DATE)AS JOINING_YEAR FROM EMPLOYEE_ATTENDANCE;
++----------+--------------+
+| EMP_NAME | JOINING_YEAR |
++----------+--------------+
+| Rahul    |         2021 |
+| Sneha    |         2020 |
+| Arjun    |         2019 |
+| Priya    |         2022 |
+| Kiran    |         2018 |
+| Anjali   |         2023 |
+| Vijay    |         2021 |
+| Divya    |         2019 |
+| Ramesh   |         2017 |
+| Pooja    |         2022 |
++----------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,MONTH(BIRTH_DATE)AS BIRT_MONTH FROM EMPLOYEES;
+ERROR 1054 (42S22): Unknown column 'EMP_NAME' in 'field list'
+mysql> SELECT EMP_NAME,MONTH(BIRTH_DATE)AS BIRTH_MONTH FROM EMPLOYEES_ATTENDANCE;
+ERROR 1146 (42S02): Table 'da6.employees_attendance' doesn't exist
+mysql> SELECT EMP_NAME,MONTH(BIRTH_DATE)AS BIRTH_MONTH FROM EMPLOYEE_ATTENDANCE;
++----------+-------------+
+| EMP_NAME | BIRTH_MONTH |
++----------+-------------+
+| Rahul    |           5 |
+| Sneha    |          11 |
+| Arjun    |           7 |
+| Priya    |           1 |
+| Kiran    |           9 |
+| Anjali   |          12 |
+| Vijay    |           4 |
+| Divya    |           6 |
+| Ramesh   |           8 |
+| Pooja    |           3 |
++----------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,DAY(BIRTH_DATE)AS BIRTH_DAY FROM EMPLOYEE_ATTENDANCE;
++----------+-----------+
+| EMP_NAME | BIRTH_DAY |
++----------+-----------+
+| Rahul    |        10 |
+| Sneha    |        18 |
+| Arjun    |        30 |
+| Priya    |        25 |
+| Kiran    |        15 |
+| Anjali   |        20 |
+| Vijay    |         8 |
+| Divya    |        11 |
+| Ramesh   |        14 |
+| Pooja    |        19 |
++----------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,WEEK(JOINING_DATE)AS WEEK_NUMBER FROM EMPLOYEE_ATTENDANCE;
++----------+-------------+
+| EMP_NAME | WEEK_NUMBER |
++----------+-------------+
+| Rahul    |          24 |
+| Sneha    |          11 |
+| Arjun    |          31 |
+| Priya    |           1 |
+| Kiran    |          49 |
+| Anjali   |          16 |
+| Vijay    |          37 |
+| Divya    |          41 |
+| Ramesh   |          26 |
+| Pooja    |          19 |
++----------+-------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,WEEK_OF_DAY(JOINING_DATE)AS WEEK_DAY FROM EMPLOYEE_ATTENDANCE;
+ERROR 1305 (42000): FUNCTION da6.WEEK_OF_DAY does not exist
+mysql> SELECT EMP_NAME,WEEKDAY(JOINING_DATE)AS WEEK_DAY FROM EMPLOYEE_ATTENDANCE;
++----------+----------+
+| EMP_NAME | WEEK_DAY |
++----------+----------+
+| Rahul    |        1 |
+| Sneha    |        5 |
+| Arjun    |        5 |
+| Priya    |        2 |
+| Kiran    |        1 |
+| Anjali   |        0 |
+| Vijay    |        1 |
+| Divya    |        5 |
+| Ramesh   |        5 |
+| Pooja    |        0 |
++----------+----------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,DATE_ADD(JOINING_DATE,INTERVAL 30 DAYS)AS MONTH_AFTER_JOINING_DATE FROM EMPLOYEES;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'DAYS)AS MONTH_AFTER_JOINING_DATE FROM EMPLOYEES' at line 1
+mysql> SELECT EMP_NAME,DATE_ADD(JOINING_DATE,INTERVAL 30 DAY)AS MONTH_AFTER_JOINING_DATE FROM EMPLOYEES;
+ERROR 1054 (42S22): Unknown column 'EMP_NAME' in 'field list'
+mysql> SELECT EMP_NAME,DATE_ADD(JOINING_DATE,INTERVAL 30 DAY)AS MONTH_AFTER_JOINING_DATE FROM EMPLOYEE_ATTENDANCE;
++----------+--------------------------+
+| EMP_NAME | MONTH_AFTER_JOINING_DATE |
++----------+--------------------------+
+| Rahul    | 2021-07-15               |
+| Sneha    | 2020-04-20               |
+| Arjun    | 2019-09-09               |
+| Priya    | 2022-02-04               |
+| Kiran    | 2019-01-10               |
+| Anjali   | 2023-05-17               |
+| Vijay    | 2021-10-14               |
+| Divya    | 2019-11-18               |
+| Ramesh   | 2017-07-31               |
+| Pooja    | 2022-06-08               |
++----------+--------------------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,DATE_SUB(JOINING_DATE,INTERVAL 15 DAY)AS MONTH_BEFORE_JOINING_DATE FROM EMPLOYEE_ATTENDANCE;
++----------+---------------------------+
+| EMP_NAME | MONTH_BEFORE_JOINING_DATE |
++----------+---------------------------+
+| Rahul    | 2021-05-31                |
+| Sneha    | 2020-03-06                |
+| Arjun    | 2019-07-26                |
+| Priya    | 2021-12-21                |
+| Kiran    | 2018-11-26                |
+| Anjali   | 2023-04-02                |
+| Vijay    | 2021-08-30                |
+| Divya    | 2019-10-04                |
+| Ramesh   | 2017-06-16                |
+| Pooja    | 2022-04-24                |
++----------+---------------------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,JOINING_DATE FROM EMPLOYEE_ATTENDANCE WHERE YEAR(JOINING_DATE)=YEAR(CURDATE());
+Empty set (0.01 sec)
+
+mysql> SELECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTH(BIRTH_DATE)=NOVEMBER;
+ERROR 1054 (42S22): Unknown column 'NOVEMBER' in 'where clause'
+mysql> SELECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTH(BIRTH_DATE)=11;
++----------+------------+
+| EMP_NAME | BIRTH_DATE |
++----------+------------+
+| Sneha    | 1996-11-18 |
++----------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTHNAME(BIRTH_DATE)=11;
+Empty set, 10 warnings (0.00 sec)
+
+mysql> SELECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTH_NAME(BIRTH_DATE)=11;
+ERROR 1305 (42000): FUNCTION da6.MONTH_NAME does not exist
+mysql> SELECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTHNAME(BIRTH_DATE)=NOVEMBER;
+ERROR 1054 (42S22): Unknown column 'NOVEMBER' in 'where clause'
+mysql> SELECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTHNAME(BIRTH_DATE)='NOVEMBER';
++----------+------------+
+| EMP_NAME | BIRTH_DATE |
++----------+------------+
+| Sneha    | 1996-11-18 |
++----------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,JOINING_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTHNAME(JOINING_DATE)='JUNE';
++----------+--------------+
+| EMP_NAME | JOINING_DATE |
++----------+--------------+
+| Rahul    | 2021-06-15   |
++----------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE DAY(BIRTH_DATE)=10;
++----------+------------+
+| EMP_NAME | BIRTH_DATE |
++----------+------------+
+| Rahul    | 1998-05-10 |
++----------+------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,JOINING_DATE FROM EMPLOYEE_ATTENDANCE WHERE QUARTER(JOINING_DATE)=2;
++----------+--------------+
+| EMP_NAME | JOINING_DATE |
++----------+--------------+
+| Rahul    | 2021-06-15   |
+| Anjali   | 2023-04-17   |
+| Pooja    | 2022-05-09   |
++----------+--------------+
+3 rows in set (0.00 sec)
+
+mysql>  SELECT EMP_NAME,TIMESTAMPDIFF(YEAR,BIRTH,DATE,CURDATE())AS AGE_YEARS FROM EMPLOYEE_ATTENDANCE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ',CURDATE())AS AGE_YEARS FROM EMPLOYEE_ATTENDANCE' at line 1
+mysql>  SELECT EMP_NAME,TIMESTAMPDIFF(YEAR,BIRTH_DATE,CURDATE())AS AGE_YEARS FROM EMPLOYEE_ATTENDANCE;
++----------+-----------+
+| EMP_NAME | AGE_YEARS |
++----------+-----------+
+| Rahul    |        28 |
+| Sneha    |        29 |
+| Arjun    |        32 |
+| Priya    |        26 |
+| Kiran    |        34 |
+| Anjali   |        26 |
+| Vijay    |        29 |
+| Divya    |        31 |
+| Ramesh   |        35 |
+| Pooja    |        25 |
++----------+-----------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,JOINING_DATE FROM EMPLOYEE_ATTENDANCE WHERE TIMESTAMPDIFF(YEAR,JOINING_DATE,CURDATE())>3;
++----------+--------------+
+| EMP_NAME | JOINING_DATE |
++----------+--------------+
+| Rahul    | 2021-06-15   |
+| Sneha    | 2020-03-21   |
+| Arjun    | 2019-08-10   |
+| Priya    | 2022-01-05   |
+| Kiran    | 2018-12-11   |
+| Vijay    | 2021-09-14   |
+| Divya    | 2019-10-19   |
+| Ramesh   | 2017-07-01   |
+| Pooja    | 2022-05-09   |
++----------+--------------+
+9 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,TIMESTAMPDIFF(HOUR,LOGIN_TIME,LOGOUT_TIME)AS WORKING_HOURS FROM EMPLOYEE_ATTENDANCE;
++----------+---------------+
+| EMP_NAME | WORKING_HOURS |
++----------+---------------+
+| Rahul    |             9 |
+| Sneha    |             8 |
+| Arjun    |             9 |
+| Priya    |             8 |
+| Kiran    |             8 |
+| Anjali   |             8 |
+| Vijay    |             9 |
+| Divya    |             8 |
+| Ramesh   |             9 |
+| Pooja    |             9 |
++----------+---------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,TIMESTAMPDIFF(MINUTES,LOGIN_TIME,LOGOUT_TIME)AS WORKING_MINUTES FROM EMPLOYEE_ATTENDANCE;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'MINUTES,LOGIN_TIME,LOGOUT_TIME)AS WORKING_MINUTES FROM EMPLOYEE_ATTENDANCE' at line 1
+mysql> SELECT EMP_NAME,TIMESTAMPDIFF(MINUTE,LOGIN_TIME,LOGOUT_TIME)AS WORKING_MINUTES FROM EMPLOYEE_ATTENDANCE;
++----------+-----------------+
+| EMP_NAME | WORKING_MINUTES |
++----------+-----------------+
+| Rahul    |             550 |
+| Sneha    |             530 |
+| Arjun    |             559 |
+| Priya    |             535 |
+| Kiran    |             529 |
+| Anjali   |             532 |
+| Vijay    |             552 |
+| Divya    |             531 |
+| Ramesh   |             549 |
+| Pooja    |             546 |
++----------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> SLECT EMP_NAME,LOGIN_TIME FROM EMPLOYEE_ATTENDANCE WHERE TIME(LOGIN_TIME)<'9:00:00';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SLECT EMP_NAME,LOGIN_TIME FROM EMPLOYEE_ATTENDANCE WHERE TIME(LOGIN_TIME)<'9:00:' at line 1
+mysql> SELECT EMP_NAME,LOGIN_TIME FROM EMPLOYEE_ATTENDANCE WHERE TIME(LOGIN_TIME)<'9:00:00';
++----------+---------------------+
+| EMP_NAME | LOGIN_TIME          |
++----------+---------------------+
+| Rahul    | 2024-11-20 09:05:10 |
+| Sneha    | 2024-11-21 08:55:20 |
+| Arjun    | 2024-11-22 09:15:45 |
+| Priya    | 2024-11-23 09:00:00 |
+| Kiran    | 2024-11-24 08:40:30 |
+| Anjali   | 2024-11-25 09:12:10 |
+| Vijay    | 2024-11-26 09:08:15 |
+| Divya    | 2024-11-27 08:50:30 |
+| Ramesh   | 2024-11-28 09:03:00 |
+| Pooja    | 2024-11-29 09:18:50 |
++----------+---------------------+
+10 rows in set (0.00 sec)
+
+mysql> SELECT EMP_NAME,LOGIN_TIME FROM EMPLOYEE_ATTENDANCE WHERE TIME(LOGIN_TIME)>'9:10:00';
+Empty set (0.00 sec)
+
+mysql> SELECT EM_NAME,JOINING_DATE FROM EMPLOYEE_ATTENDANCE WHERE DAYNAME(JOINING_DATE)='MONDAY;'
+    -> SELECT EM_NAME,JOINING_DATE FROM EMPLOYEE_ATTENDANCE WHERE DAYNAME(JOINING_DATE)='MONDAY';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SELECT EM_NAME,JOINING_DATE FROM EMPLOYEE_ATTENDANCE WHERE DAYNAME(JOINING_DATE)' at line 2
+mysql> SELECT EMP_NAME,JOINING_DATE FROM EMPLOYEE_ATTENDANCE WHERE DAYNAME(JOINING_DATE)='MONDAY';
++----------+--------------+
+| EMP_NAME | JOINING_DATE |
++----------+--------------+
+| Anjali   | 2023-04-17   |
+| Pooja    | 2022-05-09   |
++----------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> SLECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTHNAME(BIRTH_DATE)LIKE '%J';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'SLECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTHNAME(BIRTH_DATE)LI' at line 1
+mysql> SELECT EMP_NAME,BIRTH_DATE FROM EMPLOYEE_ATTENDANCE WHERE MONTHNAME(BIRTH_DATE)LIKE '%J';
+Empty set (0.03 sec)
+
+mysql> SELECT EMP_NAME,JOINING_DATE FROM EMPLOYEE_ATTENDANCE WHERE WEEK(JOINING_DATE)=25;
+Empty set (0.00 sec)
+
+mysql> SELECT EMP_NAME,LAST_DAY(BIRTH_DATE)AS LAST_DAY_BIRTH_MONTH FROM EMPLOYEE_ATTENDANCE;
++----------+----------------------+
+| EMP_NAME | LAST_DAY_BIRTH_MONTH |
++----------+----------------------+
+| Rahul    | 1998-05-31           |
+| Sneha    | 1996-11-30           |
+| Arjun    | 1994-07-31           |
+| Priya    | 2000-01-31           |
+| Kiran    | 1992-09-30           |
+| Anjali   | 1999-12-31           |
+| Vijay    | 1997-04-30           |
+| Divya    | 1995-06-30           |
+| Ramesh   | 1991-08-31           |
+| Pooja    | 2001-03-31           |
++----------+----------------------+
+10 rows in set (0.00 sec)
