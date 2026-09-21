@@ -1,0 +1,379 @@
+Normalization:-
+-------------------------------
+
+
+data redundancy
+-------------------
+--> having same data at multiple places, data redundancy leads to anomalies[Errors] and very hard to maintain data base
+
+types of anomalies:
+-----------------------
+insertion
+2. updation
+3. deletion
+
+
+----------->
+
+CREATE TABLE STUDENT_DETAILS(
+STUDENT_ID INT,
+STUDENT_NAME VARCHAR(50),
+COURSES VARCHAR(100),
+TRAINERS VARCHAR(100),
+TRAINER_PHONE VARCHAR(100)
+);
+
+INSERT INTO STUDENT_DETAILS
+VALUES
+(101,'RAVI','JAVA,PYTHON','KUMAR,RAMESH','9807564323,9867534213'),
+(102,'PRIYA','PYTHON,SQL','RAMESH,SURESH','9867534213,9857895634'),
+(103,'ARUN','JAVA,SQL','KUMAR,SURESH','9876452356,9857895634');
+
+
+
+
+----------->
+
+
+create table student_course_1NF(
+student_id int,
+student_name varchar(50),
+course varchar(30),
+trainer varchar(30),
+trainer_phone varchar(150)
+);
+
+insert into student_course_1NF values
+(101,'ravi','java','kumar','9876543210'),
+(101,'ravi','python','ramesh','9876543211'),
+(102,'priya','python','ramesh','9876543211'),
+(102,'priya','sql','suresh','9876543212'),
+(103,'arun','java','kumar','9876543210'),
+(103,'arun','sql','suresh','9876543212');
+
+
+------>
+
+
+create table student_2NF(
+student_id int primary key,
+student_name varchar(50)
+);
+
+
+
+insert into student_2NF values
+(101,'ravi'),
+(102,'priya'),
+(103,'arun');
+
+
+
+create enrollment_2NF(
+student_id int,
+course varchar(30),
+trainer varchar(50),
+trainer_phone varchar(15),
+primary key (student_id,course),
+foreign key (student_id) references student_2NF(student_id)
+);
+
+
+
+===============================================================================================================================================================================
+
+
+===>
+
+mysql> use da6;
+Database changed
+mysql> create table student_details;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table student_details
+    -> ^C
+mysql> create table student_details(
+    -> ^C
+mysql> create table student_details(
+    -> student_id int,
+    -> student_name varchar(50),
+    -> course vachar(100),
+    -> triners varchar(100),
+    -> trainer_phones varchar(100);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'vachar(100),
+triners varchar(100),
+trainer_phones varchar(100)' at line 4
+mysql> create table student_details(
+    -> student_id int,
+    -> student_name varchar(50),
+    -> courses vachar(100),
+    -> triners varchar(100),
+    -> trainer_phones varchar(100)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'vachar(100),
+triners varchar(100),
+trainer_phones varchar(100)
+)' at line 4
+mysql> create table student_details(
+    -> student_id int,
+    -> student_name varchar(50),
+    -> courses varchar(100),
+    -> triners varchar(100),
+    -> trainer_phones varchar(100)
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into student_details
+    -> values
+    -> (101,'ravi', 'java,python','kumar,ramesh','9876543210,9876543211'),
+    -> (102,'priya', 'python,sql','ramesh,suresh','9876543211,9876543212'),
+    -> (103,'arun', 'java,sql','kumar,suresh','9876543210,9876543212');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select*from student_details;
++------------+--------------+-------------+---------------+-----------------------+
+| student_id | student_name | courses     | triners       | trainer_phones        |
++------------+--------------+-------------+---------------+-----------------------+
+|        101 | ravi         | java,python | kumar,ramesh  | 9876543210,9876543211 |
+|        102 | priya        | python,sql  | ramesh,suresh | 9876543211,9876543212 |
+|        103 | arun         | java,sql    | kumar,suresh  | 9876543210,9876543212 |
++------------+--------------+-------------+---------------+-----------------------+
+3 rows in set (0.00 sec)
+
+mysql>
+mysql> create table student_course_1NF(
+    -> student_id int,
+    -> student_name varchar(50),
+    -> course varchar(30),
+    -> trainer varchar(30),
+    -> trainer_phone varchar(150
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 7
+mysql> create table student_course_1NF(
+    -> student_id int,
+    -> student_name varchar(50),
+    -> course varchar(30),
+    -> trainer varchar(30),
+    -> trainer_phone varchar(150)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into student_course_1NF values
+    -> (101,'ravi','java','kumar','9876543210'),
+    -> (101,'ravi','python','ramesh','9876543211'),
+    -> (102,'priya','python','ramesh','9876543211'),
+    -> (102,'priya','sql','suresh','9876543212'),
+    -> (103,'arun','java','kumar','9876543210'),
+    -> (103,'arun','sql','suresh','9876543212');
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select*from student_course_1NF;
++------------+--------------+--------+---------+---------------+
+| student_id | student_name | course | trainer | trainer_phone |
++------------+--------------+--------+---------+---------------+
+|        101 | ravi         | java   | kumar   | 9876543210    |
+|        101 | ravi         | python | ramesh  | 9876543211    |
+|        102 | priya        | python | ramesh  | 9876543211    |
+|        102 | priya        | sql    | suresh  | 9876543212    |
+|        103 | arun         | java   | kumar   | 9876543210    |
+|        103 | arun         | sql    | suresh  | 9876543212    |
++------------+--------------+--------+---------+---------------+
+6 rows in set (0.00 sec)
+
+mysql>  create table student_2NF(
+    -> student_id int primary key;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> ^C
+mysql>  create table student_2NF(
+    -> student_id int primary key,
+    -> student_name varchar(50)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into student_2NF values
+    -> (101,'ravi')'
+    '> (102,'priya')'
+    -> ^C
+mysql> (101,'ravi'),
+    -> (102,'priya'),
+    -> (103,'arun');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '101,'ravi'),
+(102,'priya'),
+(103,'arun')' at line 1
+mysql> insert into student_2NF values
+    -> (101,'ravi'),
+    -> (102,'priya'),
+    -> (103,'arun');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> create enrollment_2NF(
+    -> student_id int,
+    -> course varchar(30),
+    -> trainer varchar(50),
+    -> trainer_phone varchar(15),
+    -> primary key (student_id,course),
+    -> foreign key (student_id) references student_2NF(student_id)
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'enrollment_2NF(
+student_id int,
+course varchar(30),
+trainer varchar(50),
+trainer' at line 1
+mysql> create table enrollment_2NF(
+    -> student_id int,
+    -> course varchar(30),
+    -> trainer varchar(50),
+    -> trainer_phone varchar(15),
+    -> primary key (student_id,course),
+    -> foreign key (student_id) references student_2NF(student_id)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into enrollment_1NF values
+    ->     -> (101,'java','kumar','9876543210'),
+    ->     -> (101,'python','ramesh','9876543211'),
+    ->     -> (102,'python','ramesh','9876543211'),
+    ->     -> (102,'sql','suresh','9876543212'),
+    ->     -> (103,'java','kumar','9876543210'),
+    ->     -> (103,'sql','suresh','9876543212');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> (101,'java','kumar','9876543210'),
+    -> (101,'python','ramesh','9876543211'' at line 2
+mysql> create table student_course_1NF(
+    -> student_id int,
+    -> student_name varchar(50),
+    -> course varchar(30),
+    -> trainer varchar(30),
+    -> trainer_phone varchar(150)
+    -> );
+ERROR 1050 (42S01): Table 'student_course_1nf' already exists
+mysql> create table enrollment_2NF(
+    -> student_id int,
+    -> student_name varchar(50),
+    -> course varchar(30),
+    -> trainer varchar(30),
+    -> trainer_phone varchar(150)
+    -> );
+ERROR 1050 (42S01): Table 'enrollment_2nf' already exists
+mysql> insert into enrollment_1NF values
+    -> insert into enrollment_1NF values
+    ->     -> (101,'java','kumar','9876543210'),
+    ->     -> (101,'python','ramesh','9876543211'),
+    ->     -> (102,'python','ramesh','9876543211'),
+    ->     -> (102,'sql','suresh','9876543212'),
+    ->     -> (103,'java','kumar','9876543210'),
+    ->     -> (103,'sql','suresh','9876543212');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'insert into enrollment_1NF values
+    -> (101,'java','kumar','9876543210'),
+    ' at line 2
+mysql> insert into enrollment_2NF values
+    -> (101,'java','kumar','9876543210'),
+    -> (101,'python','ramesh','9876543211'),
+    -> (102,'python','ramesh','9876543211'),
+    -> (102,'sql','suresh','9876543212'),
+    -> (103,'java','kumar','9876543210'),
+    -> (103,'sql','suresh','9876543212');
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> create table trainer_3NF(
+    -> trainer_id int primary key,
+    -> trainer_name varchar(50),
+    -> trainer_phone varchar(15)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into trainer_3NF values
+    -> (1,'kumar','9876543210'),
+    -> (2,'ramesh','9876543211'),
+    -> (3,'suresh','9876543212');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> create table course_3NF(
+    -> course_id int primary key,
+    -> course_name varchar(30),
+    -> trainer_id int,
+    -> foreign key (trainer_id) references trainer_3NF(trainer_id)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into course_3nf values
+    -> (1,'java',1),
+    -> (2,'python',2),
+    -> (3,'sql',3);
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> create table enrollment_3NF(
+    -> student_id int,
+    -> course_id int,
+    -> primary key (student_id, course_id),
+    -> foreign key (student_id) references student_2NF(student_id),
+    -> foreign key (course_id) references course_3NF(course_id)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> insert into enrollment_3NF
+    -> values
+    -> (101,1)
+    -> (101,2)
+    -> ^C
+mysql> (101,1),
+    -> (101,2),
+    -> (102,2),
+    -> (102,3),
+    -> (102,2),
+    -> (102,2^C
+mysql> (101,1),
+    -> (101,2),
+    -> (102,2),
+    -> (102,3),^C
+mysql> insert into enrollment_3NF
+    -> values
+    -> (101,1),
+    -> (101,2),
+    -> (102,2),
+    -> (102,3),
+    -> (103,1),
+    -> (103,3);
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> show table enrollment_3NF;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'enrollment_3NF' at line 1
+mysql> select*from enrollment_3NF;
++------------+-----------+
+| student_id | course_id |
++------------+-----------+
+|        101 |         1 |
+|        103 |         1 |
+|        101 |         2 |
+|        102 |         2 |
+|        102 |         3 |
+|        103 |         3 |
++------------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> select*from  course_3NF;
++-----------+-------------+------------+
+| course_id | course_name | trainer_id |
++-----------+-------------+------------+
+|         1 | java        |          1 |
+|         2 | python      |          2 |
+|         3 | sql         |          3 |
++-----------+-------------+------------+
+3 rows in set (0.00 sec) 
+
+
+
+
+
+
+
+
+
+
+
+
