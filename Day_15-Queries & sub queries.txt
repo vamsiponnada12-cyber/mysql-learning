@@ -1,0 +1,13 @@
+Queries and Sub Queries
+-------------------------
+
+What is subquery?
+------------------
+A subquery is query inside another query
+it is written inside parenthesis() and its result is used by the outer query
+
+it is also called as
+
+inner query
+nested query
+inner  sselect
