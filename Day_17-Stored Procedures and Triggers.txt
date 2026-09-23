@@ -1,0 +1,734 @@
+the process of combining all related operations imto single unit and executoing the according to the rule either all operations suc
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+there are two types of transactions
+-------------------------------------
+1. local transaction
+2. global transaction
+
+1.local transactions
+---------------------
+in local transactions all operations of a transaction are extended on the same database.
+
+example:
+funds transfer one account to another account where both accounts belong to the same bank.
+
+
+2.global transactions
+---------------------
+in global transactions all operations of a transaction are extended on the different database.
+
+example:
+funds transfer one account to another account where both accounts belong to the different bank.
+
+
+ACID properties
+-----------------
+Atomicity: all or nothing
+consistency: the database remains in a valid state
+isolation: transactions do not interface with each other
+Durability: committed changes are permanent.
+
+
+
+Transaction control language(TCL):
+----------------------------------
+1. commit
+2. rollback
+3. save point
+
+
+1. commit
+----------
+
+commit is used to permanently save all changes made during the current transaction into the database
+
+once committed.
+--------------
+changes become permanent
+others users can see the changes
+you cannot undo the changes using rollback
+
+
+2. rollback
+-----------
+rollback is used to undo all changes made in the current transaction before a commit.
+
+if something goes wrong. rollback restores the database to its previous state.
+
+
+=======================================================================================================================
+Execution process:
+-------------------
+
+mysql> use da6;
+Database changed
+mysql> shows tables;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'shows tables' at line 1
+mysql> show tables;
++------------------------------+
+| Tables_in_da6                |
++------------------------------+
+| departments                  |
+| employees                    |
+| vw_department_salary_summary |
+| vw_employee_annual_salary    |
+| vw_high_paying_department    |
++------------------------------+
+5 rows in set (0.02 sec)
+
+mysql> create table students(
+    -> std_id int primary key,
+    -> std_name varchar(50),
+    -> marks int);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into students values(111,'babu',97),(222,'mahi',100);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> slect*from students;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'slect*from students' at line 1
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    111 | babu     |    97 |
+|    222 | mahi     |   100 |
++--------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update students set marks = 60 where st_id = 111;
+ERROR 1054 (42S22): Unknown column 'st_id' in 'where clause'
+mysql> update students set marks = 60 where std_id = 111;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    111 | babu     |    60 |
+|    222 | mahi     |   100 |
++--------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    111 | babu     |    97 |
+|    222 | mahi     |   100 |
++--------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> delete from students where std_id = 111;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    222 | mahi     |   100 |
++--------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into students values(333,'ramu',56),(444,'tharun',78);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    222 | mahi     |   100 |
+|    333 | ramu     |    56 |
+|    444 | tharun   |    78 |
++--------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> update students set std_name = 'mani' where std_id = 222;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    222 | mani     |   100 |
+|    333 | ramu     |    56 |
+|    444 | tharun   |    78 |
++--------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> delete from students where std_id = 333:
+    -> delete from students where std_id = 333:;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ':
+delete from students where std_id = 333:' at line 1
+mysql> delete from students where std_id = 333;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    222 | mani     |   100 |
+|    444 | tharun   |    78 |
++--------+----------+-------+
+2 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    222 | mahi     |   100 |
++--------+----------+-------+
+1 row in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into students values(333,'bhai',89),(444,'advance',98);
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    222 | mahi     |   100 |
+|    333 | bhai     |    89 |
+|    444 | advance  |    98 |
++--------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> update students set std_name = 'mani' where std_id = 222;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    222 | mani     |   100 |
+|    333 | bhai     |    89 |
+|    444 | advance  |    98 |
++--------+----------+-------+
+3 rows in set (0.00 sec)
+
+mysql> savepoint sp1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from students where std_id = 444;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> rollback to sp1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select*from students;
++--------+----------+-------+
+| std_id | std_name | marks |
++--------+----------+-------+
+|    222 | mani     |   100 |
+|    333 | bhai     |    89 |
+|    444 | advance  |    98 |
++--------+----------+-------+
+3 rows in set (0.00 sec)
+
+
+
+Introduction to stored procedures
+----------------------------------
+a stored is a named, precompiled collection of one or more SQL statements that is stored the database and can be
+executed called whenever required. instead of sending ling block of SQL from an application every time, he application
+simply calls the procedures by name.
+
+why use stored procedures
+-------------------------
+1. performance
+2. reusability
+2. reduce network traffic
+3. maintainability
+4. consistency
+
+
+advantages
+-----------
+
+faster execution after completion
+reduce duplicate SQL
+support transaction, loops, conditions, variables...etc
+easy maintainence
+
+
+disadvantages
+-----------------
+debugging can be difficult
+vendor specific syntax
+complex procedures may become hard to maintain
+
+syntax to create stored procedures
+-----------------------------------
+
+delimiter //
+create procedure procedure_name()
+begin
+----SQL statements
+end //
+delimiter ;
+
+IN parameter
+-------------
+an IN parameter is used to pass a value into a stored procedure.the procedure can used the value but, changes made to the parameter inside the procedure are not returned to the caller
+
+ syntax
+----------
+delimiter //
+create procedure procedure_name(IN parameter_name datatype)
+begin
+     SQL stetements
+end ;
+delimiter ;
+
+
+
+IN PARAMETER EXECUTION PROCESS:
+---------------------------------
+CREATE DATABASE companydb;
+Query OK, 1 row affected (0.01 sec)
+
+mysql>
+mysql> USE companydb;
+Database changed
+mysql>
+mysql> CREATE TABLE employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(50),
+    ->     department VARCHAR(50),
+    ->     salary DECIMAL(10,2),
+    ->     experience INT,
+    ->     city VARCHAR(50),
+    ->     age INT
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql>
+mysql> INSERT INTO employees
+    -> VALUES
+    -> (101, 'Ravi', 'IT', 45000, 2, 'Hyderabad', 24),
+    -> (102, 'Kiran', 'HR', 40000, 3, 'Vijayawada', 27),
+    -> (103, 'Suresh', 'IT', 55000, 5, 'Hyderabad', 30),
+    -> (104, 'Anil', 'Sales', 35000, 1, 'Chennai', 23),
+    -> (105, 'Priya', 'Finance', 60000, 6, 'Bangalore', 32),
+    -> (106, 'Sneha', 'IT', 50000, 4, 'Vizag', 28),
+    -> (107, 'Rahul', 'HR', 42000, 2, 'Hyderabad', 25),
+    -> (108, 'Arjun', 'Sales', 38000, 3, 'Chennai', 26),
+    -> (109, 'Divya', 'Finance', 65000, 7, 'Bangalore', 34),
+    -> (110, 'Manoj', 'IT', 70000, 8, 'Hyderabad', 35);
+Query OK, 10 rows affected (0.02 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> select*from employees;
++--------+----------+------------+----------+------------+------------+------+
+| emp_id | emp_name | department | salary   | experience | city       | age  |
++--------+----------+------------+----------+------------+------------+------+
+|    101 | Ravi     | IT         | 45000.00 |          2 | Hyderabad  |   24 |
+|    102 | Kiran    | HR         | 40000.00 |          3 | Vijayawada |   27 |
+|    103 | Suresh   | IT         | 55000.00 |          5 | Hyderabad  |   30 |
+|    104 | Anil     | Sales      | 35000.00 |          1 | Chennai    |   23 |
+|    105 | Priya    | Finance    | 60000.00 |          6 | Bangalore  |   32 |
+|    106 | Sneha    | IT         | 50000.00 |          4 | Vizag      |   28 |
+|    107 | Rahul    | HR         | 42000.00 |          2 | Hyderabad  |   25 |
+|    108 | Arjun    | Sales      | 38000.00 |          3 | Chennai    |   26 |
+|    109 | Divya    | Finance    | 65000.00 |          7 | Bangalore  |   34 |
+|    110 | Manoj    | IT         | 70000.00 |          8 | Hyderabad  |   35 |
++--------+----------+------------+----------+------------+------------+------+
+10 rows in set (0.00 sec)
+
+mysql> delimiter //
+mysql> ^C
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE getEmployeeById(IN eid INT)
+    -> BEGIN
+    ->     SELECT*FROM EMPLOYEES WHERE EMP_ID = EID;
+    -> END //
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELIMITER //
+mysql> CALL getEmployeeId(101);
+    -> CALL getEmployeeById(101);
+    -> DELIMITER //^C
+mysql> DELIMITER ;
+mysql> CALL getEmployeeById(101);
++--------+----------+------------+----------+------------+-----------+------+
+| emp_id | emp_name | department | salary   | experience | city      | age  |
++--------+----------+------------+----------+------------+-----------+------+
+|    101 | Ravi     | IT         | 45000.00 |          2 | Hyderabad |   24 |
++--------+----------+------------+----------+------------+-----------+------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> CALL getEmployeeById(110);
++--------+----------+------------+----------+------------+-----------+------+
+| emp_id | emp_name | department | salary   | experience | city      | age  |
++--------+----------+------------+----------+------------+-----------+------+
+|    110 | Manoj    | IT         | 70000.00 |          8 | Hyderabad |   35 |
++--------+----------+------------+----------+------------+-----------+------+
+1 row in set (0.03 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> delimiter //
+mysql> ^C
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE getemployeeBySalary(IN eno int)
+    -> BEGIN
+    ->     SELECT SALARY FROM EMPLOYEES WHERE  EMP_ID = ENO;
+    -> END //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DELIMITER ;
+mysql> CALL getEmployeeBySalary(105);
++----------+
+| SALARY   |
++----------+
+| 60000.00 |
++----------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE getEmployeeByDepartment(in dept varcahr(20))
+    -> BEGIN
+    ->     SELECT*FROM EMPLOYEES WHERE DEPARTMENT = DEPT;
+    -> END //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'varcahr(20))
+BEGIN
+    SELECT*FROM EMPLOYEES WHERE DEPARTMENT = DEPT;
+END' at line 1
+mysql> CREATE PROCEDURE getEmployeeByDepartment(in dept varchar(20))
+    -> BEGIN
+    ->     SELECT*FROM EMPLOYEES WHERE DEPARTMENT = DEPT;
+    -> END //
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> DELIMITER ;
+mysql> CALL getEmployeeByDepartment(it);
+ERROR 1054 (42S22): Unknown column 'it' in 'field list'
+mysql> CALL getEmployeeByDepartment(IT);
+ERROR 1054 (42S22): Unknown column 'IT' in 'field list'
+mysql> CALL getEmployeeByDepartment('IT');
++--------+----------+------------+----------+------------+-----------+------+
+| emp_id | emp_name | department | salary   | experience | city      | age  |
++--------+----------+------------+----------+------------+-----------+------+
+|    101 | Ravi     | IT         | 45000.00 |          2 | Hyderabad |   24 |
+|    103 | Suresh   | IT         | 55000.00 |          5 | Hyderabad |   30 |
+|    106 | Sneha    | IT         | 50000.00 |          4 | Vizag     |   28 |
+|    110 | Manoj    | IT         | 70000.00 |          8 | Hyderabad |   35 |
++--------+----------+------------+----------+------------+-----------+------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE SalaryRange(IN minsal decimal(10,2),)
+    -> ^C
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE SalaryRange(IN minsal decimal(10,2),
+    -> IN maxsal decimal(10,2))
+    -> BEGIN
+    ->      SELECT*FROM EMPLOYEES WHERE SALARY BETWEEN MINSAL AND MAXSAL;
+    -> END //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELIMITER ;
+mysql> CALL SalaryRange(40000,80000);
++--------+----------+------------+----------+------------+------------+------+
+| emp_id | emp_name | department | salary   | experience | city       | age  |
++--------+----------+------------+----------+------------+------------+------+
+|    101 | Ravi     | IT         | 45000.00 |          2 | Hyderabad  |   24 |
+|    102 | Kiran    | HR         | 40000.00 |          3 | Vijayawada |   27 |
+|    103 | Suresh   | IT         | 55000.00 |          5 | Hyderabad  |   30 |
+|    105 | Priya    | Finance    | 60000.00 |          6 | Bangalore  |   32 |
+|    106 | Sneha    | IT         | 50000.00 |          4 | Vizag      |   28 |
+|    107 | Rahul    | HR         | 42000.00 |          2 | Hyderabad  |   25 |
+|    109 | Divya    | Finance    | 65000.00 |          7 | Bangalore  |   34 |
+|    110 | Manoj    | IT         | 70000.00 |          8 | Hyderabad  |   35 |
++--------+----------+------------+----------+------------+------------+------+
+8 rows in set (0.03 sec)
+
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE Experienced(IN EXP INT)
+    -> BEGIN
+    ->     SELECT*FROM EMPLOYEES WHERE ECPERIENCE>=5;
+    -> END //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELIMITER ;
+mysql> CALL Experienced(5);
+ERROR 1054 (42S22): Unknown column 'ECPERIENCE' in 'where clause'
+mysql> ^C
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE DEPTEXP(IN DEP VARCHAR(20),
+    -> IN EXP INT)
+    -> BEGIN
+    ->     SELECT*FROM EMPLOYEES WHERE DEPARTMENT = DEP AND EXPERIENCE >= EXP;
+    -> END //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELIMITER ;
+mysql> CALL DEPTEXP('IT',5);
++--------+----------+------------+----------+------------+-----------+------+
+| emp_id | emp_name | department | salary   | experience | city      | age  |
++--------+----------+------------+----------+------------+-----------+------+
+|    103 | Suresh   | IT         | 55000.00 |          5 | Hyderabad |   30 |
+|    110 | Manoj    | IT         | 70000.00 |          8 | Hyderabad |   35 |
++--------+----------+------------+----------+------------+-----------+------+
+2 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+
+
+
+OUT PARAMETER:
+--------------
+
+An out parameter is used to return a value from the stored procedure to the caller
+
+The caller provides a variable to receive the result.
+
+
+syntax
+--------
+DELIMITR //
+create procedure procedure_name(out parameter_name datatype)
+BEGIN
+    set parameter_name value;
+END;
+
+//return the total number of employees.
+
+
+OUT PARAMETER EXECUTION
+-------------------------
+
+--- out parameter.
+    -> -- return the total number of employees.
+    -> DELIMITER //
+    -> CREATE PROCEDURE TOTAL_EMPLOYEES(OUT TOTAL INT)
+    -> BEGIN
+    ->     SELECT COUNT(*) INTO TOTAL FROM EMPLOYEES;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-
+
+DELIMITER //CREATE PROCEDURE TOTAL_EMPLOYEES(OUT TOTAL INT)
+BEGIN
+    SELECT ' at line 1
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE TOTAL_EMPLOYEES(OUT Ttotal INT)
+    -> ^C
+mysql> DELIMITER //
+mysql> CREATE PROCEDURE TOTAL_EMPLOYEES(OUT total INT)
+    -> begin
+    ->     select count(*) into total from employees;
+    -> end //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> delimiter ;
+mysql> set @total = 0;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> call total_employees(@total);
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select @total;
++--------+
+| @total |
++--------+
+|     10 |
++--------+
+1 row in set (0.03 sec)
+
+mysql> delimiter //
+mysql> create procedure maximumsalary(out max int)
+    -> ^C
+mysql> delimiter //
+mysql> create procedure maximumsalary(out max decimal(10,2))
+    -> begin
+    ->     select max(salary) into maxsal^C
+mysql> delimiter //
+mysql> create procedure maximumsalary(out maxsal decimal(10,2))
+    -> begin
+    ->     select max(salary) into maxsal from employees;
+    -> end //
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter;
+    -> set @max = 0;
+    -> call maximumsalary (@max);
+    -> salact @max;
+    -> ^C
+mysql> delimiter ;
+mysql> set @max = 0;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call maximumsalary (@max);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select @max;
++----------+
+| @max     |
++----------+
+| 70000.00 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> delimiter //
+mysql> create procedure itemployeescount(out cnt int)
+    -> begin
+    ->     select count(*) into cnt from employees where department = 'it';
+    -> end //
+Query OK, 0 rows affected (0.03 sec)
+
+
+
+
+INOUT PARAMETER:
+----------------
+
+An INOUT  parameter is used when we want to send a value into the procedure and receive the modified value back
+
+INOUT = INPUT + OUTPUT
+
+syntax
+----------
+
+create procedure procedure_name(INOUT parametr_name datatype)
+begin 
+    set parameter_name = new_value;
+end //
+
+
+EXECUTION:
+---------------- 
+
+mysql> delimiter //
+mysql> create procedure increased_salary(in eid int,inout salary_amount decimal(10,2))
+    -> begin
+    -> select salary+salary_amount into salary_amount
+    -> from employees where emp_id = eid;
+    -> end //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> delimiter ;
+mysql> set @amount = 5000;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call increased_salary (101,@amount);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select @amount;
++----------+
+| @amount  |
++----------+
+| 50000.00 |
++----------+
+1 row in set (0.00 sec)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
