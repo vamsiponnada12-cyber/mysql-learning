@@ -1,0 +1,295 @@
+Views
+------
+a view is a virtual table created from the result of select query.
+
+it doesn't normally stores the actual data separately instead it stores the SQL query and whenever you accesses the view, MySQL retrieves the data from the underlying tables.
+
+why do we need views
+--------------------
+1. simplify complex queries.
+2. reuse query logic.
+3. data security.
+4. simplified reporting.
+
+
+
+
+
+
+
+
+
+
+diff btw table view
+-------------------
+-->table physically stores the data.
+-->view is virtual table based on query.
+
+
+-->can stores records directly.
+-->usually doesn't store separate data.
+
+
+-->create using create table.
+-->create using create view.
+
+
+-->it contains all table data.
+-->can show selected rows/columns.
+
+
+-->used for permanent data storage.
+-->mainly used for abstract, security, and reusable queries.
+
+
+create view syntax
+-------------------
+-->
+create view view_name as
+select column from table
+where conditions.
+
+
+altering view
+-------------
+alter view_name as
+select new_columns from new_tables
+where new_conditions;
+
+
+
+drop view
+---------
+
+drop view_name;
+
+
+============================================================================================================================================================
+
+
+mysql> use da6;
+Database changed
+mysql> CREATE TABLE departments (
+    ->  dept_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->  dept_name VARCHAR(50),
+    ->  location VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql>
+mysql> CREATE TABLE employees (
+    ->  emp_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->  emp_name VARCHAR(100),
+    ->  dept_id INT,
+    ->  designation VARCHAR(50),
+    ->  salary DECIMAL(10,2),
+    ->  join_date DATE,
+    ->  FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> INSERT INTO departments (dept_name, location) VALUES
+    -> ('IT','Hyderabad'), ('HR','Bangalore'), ('Finance','Chennai'), ('Sales','Mumbai');
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql>
+mysql> INSERT INTO employees (emp_name, dept_id, designation, salary, join_date) VALUES
+    -> ('Rahul',1,'Software Engineer',55000,'2021-06-15'),
+    -> ('Anita',2,'HR Executive',38000,'2020-03-21'),
+    -> ('Suresh',4,'Sales Manager',52000,'2019-08-10'),
+    -> ('Priya',1,'Team Lead',65000,'2022-01-05'),
+    -> ('Kiran',3,'Finance Analyst',48000,'2018-12-11'),
+    -> ('Deepika',2,'HR Manager',60000,'2019-10-19');
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> select*from departments;
++---------+-----------+-----------+
+| dept_id | dept_name | location  |
++---------+-----------+-----------+
+|       1 | IT        | Hyderabad |
+|       2 | HR        | Bangalore |
+|       3 | Finance   | Chennai   |
+|       4 | Sales     | Mumbai    |
++---------+-----------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select*from employees;
++--------+----------+---------+-------------------+----------+------------+
+| emp_id | emp_name | dept_id | designation       | salary   | join_date  |
++--------+----------+---------+-------------------+----------+------------+
+|      1 | Rahul    |       1 | Software Engineer | 55000.00 | 2021-06-15 |
+|      2 | Anita    |       2 | HR Executive      | 38000.00 | 2020-03-21 |
+|      3 | Suresh   |       4 | Sales Manager     | 52000.00 | 2019-08-10 |
+|      4 | Priya    |       1 | Team Lead         | 65000.00 | 2022-01-05 |
+|      5 | Kiran    |       3 | Finance Analyst   | 48000.00 | 2018-12-11 |
+|      6 | Deepika  |       2 | HR Manager        | 60000.00 | 2019-10-19 |
++--------+----------+---------+-------------------+----------+------------+
+6 rows in set (0.00 sec)
+
+mysql> CREATE VIEW VW_EMPLOYEE_DEPARTMENT AS
+    -> SELECT E.EMP_ID,E.EMP_NAME,E.DESIGNATION,D.DEPT_NAME,D.LOCATION
+    -> FROM EMPLOYEES E
+    -> JOIN DEPARTMENTS D ON E.DEPT_ID = D.DEPT_ID;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT*FROM VW_EMPLOYEE_DEPARTMENT;
++--------+----------+-------------------+-----------+-----------+
+| EMP_ID | EMP_NAME | DESIGNATION       | DEPT_NAME | LOCATION  |
++--------+----------+-------------------+-----------+-----------+
+|      1 | Rahul    | Software Engineer | IT        | Hyderabad |
+|      4 | Priya    | Team Lead         | IT        | Hyderabad |
+|      2 | Anita    | HR Executive      | HR        | Bangalore |
+|      6 | Deepika  | HR Manager        | HR        | Bangalore |
+|      5 | Kiran    | Finance Analyst   | Finance   | Chennai   |
+|      3 | Suresh   | Sales Manager     | Sales     | Mumbai    |
++--------+----------+-------------------+-----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> SHOW FULL TYABLES WHERE TABLE_TYPE = 'VIEW';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'TYABLES WHERE TABLE_TYPE = 'VIEW'' at line 1
+mysql> SHOW FULL TABLES WHERE TABLE_TYPE = 'VIEW';
++------------------------+------------+
+| Tables_in_da6          | Table_type |
++------------------------+------------+
+| vw_employee_department | VIEW       |
++------------------------+------------+
+1 row in set (0.01 sec)
+
+mysql> CREATE VIEW VW_DEPARTMENT_SALARY_SUMMARY AS
+    -> SELECT D.DEPT_NAME,
+    -> COUNT(E.EMP_ID)AS TOTAL_EMPLOYEES,
+    -> SUM(E.SALARY)AS TOTAL_SALARY,
+    -> AVG(E.SALARY)AS AVERAGE_SALARY
+    -> D
+    -> F^C
+mysql> CREATE VIEW VW_DEPARTMENT_SALARY_SUMMARY AS
+    -> SELECT D.DEPT_NAME,
+    -> COUNT(E.EMP_ID)AS TOTAL_EMPLOYEES,
+    -> SUM(E.SALARY)AS TOTAL_SALARY,
+    -> AVG(E.SALARY)AS AVERAGE_SALARY
+    -> FROM EMPLOYEES E
+    -> JOIN DEPARTMENTS D ON E.DEPT_ID = D.DEPT_ID
+    -> GROUP BY D.DEPT_NAME;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW FULL TABLES WHERE TABLE_TYPE = 'VIEW';
++------------------------------+------------+
+| Tables_in_da6                | Table_type |
++------------------------------+------------+
+| vw_department_salary_summary | VIEW       |
+| vw_employee_department       | VIEW       |
++------------------------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT*FROM VW_DEPARTTMENT_SALARY_SUMMARY;
+ERROR 1146 (42S02): Table 'da6.vw_departtment_salary_summary' doesn't exist
+mysql> SELECT*FROM VW_DEPARTMENT_SALARY_SUMMARY;
++-----------+-----------------+--------------+----------------+
+| DEPT_NAME | TOTAL_EMPLOYEES | TOTAL_SALARY | AVERAGE_SALARY |
++-----------+-----------------+--------------+----------------+
+| IT        |               2 |    120000.00 |   60000.000000 |
+| HR        |               2 |     98000.00 |   49000.000000 |
+| Finance   |               1 |     48000.00 |   48000.000000 |
+| Sales     |               1 |     52000.00 |   52000.000000 |
++-----------+-----------------+--------------+----------------+
+4 rows in set (0.01 sec)
+
+mysql> CREATE VIEW VW_EMPLOYEE_ANNUAL_SALARY AS
+    -> SELECT EMP_NAME,SALARY AS MONTHLY_SALARY,SALARY*12 AS ANNUAL_SALARY
+    -> FROM EMPLOYEES;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT*FROM VW_EMPLOYEE_ANNUAL_SALARY;
++----------+----------------+---------------+
+| EMP_NAME | MONTHLY_SALARY | ANNUAL_SALARY |
++----------+----------------+---------------+
+| Rahul    |       55000.00 |     660000.00 |
+| Anita    |       38000.00 |     456000.00 |
+| Suresh   |       52000.00 |     624000.00 |
+| Priya    |       65000.00 |     780000.00 |
+| Kiran    |       48000.00 |     576000.00 |
+| Deepika  |       60000.00 |     720000.00 |
++----------+----------------+---------------+
+6 rows in set (0.00 sec)
+
+mysql> CREATE VW_HIGH_PAYING_DEPARTMENT AS
+    -> SELECT DEPT_NAME,^C
+mysql> CREATE VIEW VW_HIGH_PAYING_DEPARTMENT AS
+    -> SELECT DEPT_NAME,AVERAGE_SALARY
+    -> FROM VW_DEPARTMENT_SALARY_SUMMARY
+    -> WHERE AVERAGE_SALARY > 50000;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT*FROM VW_HIGH_PAYING_DEPARTMENT;
++-----------+----------------+
+| DEPT_NAME | AVERAGE_SALARY |
++-----------+----------------+
+| IT        |   60000.000000 |
+| Sales     |   52000.000000 |
++-----------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> ALTER VIEW VW_EMPLOYEE_DEPARTMENT AS
+    -> SELECT E.EMP_ID,E.EMP_NAME,D.DEPT_NAME
+    -> FROM EMPLOYEES E
+    -> JOIN DEPARTMENTS D ON E.DEPT_ID = D.DEPT_ID;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SELECT*FROM VW_EMPLOYEE_DEPARTMENT;
++--------+----------+-----------+
+| EMP_ID | EMP_NAME | DEPT_NAME |
++--------+----------+-----------+
+|      1 | Rahul    | IT        |
+|      4 | Priya    | IT        |
+|      2 | Anita    | HR        |
+|      6 | Deepika  | HR        |
+|      5 | Kiran    | Finance   |
+|      3 | Suresh   | Sales     |
++--------+----------+-----------+
+6 rows in set (0.00 sec)
+
+mysql> DROP VIEW VW_EMPLOYEE_DEPARTMENT;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> SHOW FULL TABLES WHERE TABLE_TYPE = 'VIEW';
++------------------------------+------------+
+| Tables_in_da6                | Table_type |
++------------------------------+------------+
+| vw_department_salary_summary | VIEW       |
+| vw_employee_annual_salary    | VIEW       |
+| vw_high_paying_department    | VIEW       |
++------------------------------+------------+
+3 rows in set (0.00 sec)
+
+mysql>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
